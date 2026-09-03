@@ -423,7 +423,7 @@ export default function Home() {
         </h1>
 
         {/* Looped Video Carousel */}
-        <div className="w-full max-w-5xl my-2 sm:my-3 relative overflow-hidden py-2 -translate-y-3">
+        <div className="w-full max-w-5xl my-2 sm:my-3 relative overflow-hidden py-2 -translate-y-9">
           {/* Subtle Side Fade Overlays for seamless edge blending */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
@@ -467,12 +467,12 @@ export default function Home() {
         </div>
 
         {/* Subtitle & CTA */}
-        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8 mt-2 sm:mt-4">
+        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 mt-1 sm:mt-2 -translate-y-2">
           Specialized in high-retention social content, cinematic commercials, and digital storytelling that captivates audiences.
         </p>
         <a
           href="#work"
-          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200"
+          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200 -translate-y-2"
         >
           View My Work
         </a>
