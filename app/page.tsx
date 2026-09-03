@@ -240,7 +240,7 @@ export default function Home() {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-6 left-0 right-0 mx-auto w-[90%] max-w-4xl h-12 z-40 rounded-full bg-neutral-950/80 backdrop-blur-md border border-neutral-800 px-6 md:px-8 shadow-2xl flex items-center justify-between">
+      <nav className="fixed top-6 left-0 right-0 mx-auto w-[90%] max-w-4xl h-14 z-40 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-neutral-800 px-6 md:px-8 shadow-2xl flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex-1 flex items-center justify-start">
           <div className="text-sm md:text-base tracking-tight flex items-center gap-2 font-bold text-white">
@@ -260,6 +260,9 @@ export default function Home() {
           <a href="#pricing" className="text-neutral-400 hover:text-white transition-colors">
             Prices
           </a>
+          <a href="#faq" className="text-neutral-400 hover:text-white transition-colors">
+            FAQ
+          </a>
         </div>
 
         {/* Right: CTA Button */}
@@ -274,9 +277,9 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-20 sm:pt-22 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
+      <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
         {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md -translate-y-2.5 mb-6 sm:mb-8 shadow-sm">
           <svg
             className="w-3.5 h-3.5 text-[#ff4b72] shrink-0"
             viewBox="0 0 24 24"
@@ -312,7 +315,7 @@ export default function Home() {
       </section>
 
       {/* Work Grid: Dual Showcase (Left 16:9 + Right 9:16) */}
-      <section id="work" className="pt-6 sm:pt-8 pb-16 md:pb-24 px-6 max-w-6xl mx-auto">
+      <section id="work" className="pt-6 sm:pt-8 pb-6 md:pb-8 px-6 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">See My Services</h2>
@@ -812,7 +815,7 @@ export default function Home() {
       </section>
 
       {/* Pricing Section with Texture Transition & Ambient Glow */}
-      <section id="pricing" className="relative w-full pt-12 md:pt-16 pb-20 md:pb-24 mt-4 md:mt-6 mb-12 md:mb-16 overflow-hidden">
+      <section id="pricing" className="relative w-full pt-12 md:pt-16 pb-20 md:pb-24 mt-0 md:-mt-2 mb-12 md:mb-16 overflow-hidden">
         {/* Top Luminous Beam Divider */}
         <div className="absolute top-0 left-0 right-0 luminous-divider" />
 
@@ -1049,7 +1052,7 @@ export default function Home() {
       )}
 
       {/* FAQ Section */}
-      <section className="pt-6 md:pt-10 pb-16 md:pb-20 px-6 max-w-6xl mx-auto w-full">
+      <section id="faq" className="pt-6 md:pt-10 pb-16 md:pb-20 px-6 max-w-6xl mx-auto w-full">
         <div className="text-center mb-10 md:mb-14">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
             Got Questions?
@@ -1065,21 +1068,35 @@ export default function Home() {
               <div
                 key={index}
                 onClick={() => setOpenFaq(isExpanded ? null : index)}
-                className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-7 cursor-pointer hover:border-neutral-700 transition-colors"
+                className={`group bg-[#111] border rounded-2xl p-6 md:p-7 cursor-pointer transition-all duration-300 ${isExpanded
+                    ? "border-[#eaff00]/40 bg-[#141414] shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                    : "border-neutral-800 hover:border-neutral-700 hover:bg-[#151515]"
+                  }`}
               >
                 <div className="flex items-center justify-between gap-4 select-none">
-                  <span className="font-bold uppercase tracking-wide text-white text-base md:text-lg">
+                  <span className={`font-bold uppercase tracking-wide text-base md:text-lg transition-colors duration-200 ${isExpanded ? "text-white" : "text-white group-hover:text-neutral-200"
+                    }`}>
                     {faq.question}
                   </span>
-                  <div className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 flex items-center justify-center shrink-0">
-                    {isExpanded ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isExpanded
+                        ? "bg-[#eaff00] text-black rotate-45 shadow-[0_0_12px_rgba(234,255,0,0.25)]"
+                        : "bg-neutral-800 text-neutral-300 group-hover:bg-neutral-700 group-hover:text-white rotate-0"
+                      }`}
+                  >
+                    <Plus className="w-4 h-4 transition-transform duration-300" />
                   </div>
                 </div>
-                {isExpanded && (
-                  <p className="text-neutral-400 text-base mt-4 pt-4 border-t border-neutral-800/80 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                )}
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="text-neutral-400 text-base pt-4 mt-4 border-t border-neutral-800/80 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -1087,7 +1104,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section & Floating Widget Wrapper */}
-      <div className="relative w-full bg-neutral-950 border-t border-neutral-900">
+      <div className="relative w-full bg-neutral-950 border-t-2 border-neutral-700/60">
         {/* Contact Section / Compact Footer */}
         <footer ref={footerRef} id="contact" className="py-16 md:py-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10 md:gap-16 text-sm text-neutral-400">
           {/* Left Column */}
