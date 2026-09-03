@@ -467,12 +467,12 @@ export default function Home() {
         </div>
 
         {/* Subtitle & CTA */}
-        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 mt-1 sm:mt-2 -translate-y-2">
+        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-6 mt-1 sm:mt-2 -translate-y-6">
           Specialized in high-retention social content, cinematic commercials, and digital storytelling that captivates audiences.
         </p>
         <a
           href="#work"
-          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200 -translate-y-2"
+          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200 -translate-y-6"
         >
           View My Work
         </a>
@@ -1367,11 +1367,11 @@ export default function Home() {
               alt="Avatar"
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
             />
-            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-gray-400 border-2 border-white rounded-full" />
+            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-xs sm:text-sm font-bold truncate">Message Your Name</span>
-            <span className="text-[10px] sm:text-xs text-gray-500 font-medium truncate">Away • Avg. response time: 1 Hour</span>
+            <span className="text-[10px] sm:text-xs text-gray-500 font-medium truncate">Online • Avg. response time: 10 Minutes</span>
           </div>
         </a>
       </div>

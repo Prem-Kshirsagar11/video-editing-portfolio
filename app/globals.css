@@ -26,18 +26,17 @@ body {
   0% {
     background-position: 100% 0;
   }
+
   100% {
     background-position: -100% 0;
   }
 }
 
 .text-shimmer {
-  background: linear-gradient(
-    110deg,
-    #eaff00 20%,
-    #ffffff 50%,
-    #eaff00 80%
-  );
+  background: linear-gradient(110deg,
+      #eaff00 20%,
+      #ffffff 50%,
+      #eaff00 80%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -50,7 +49,7 @@ body {
 
 .bg-grid-pattern {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -60,58 +59,46 @@ body {
 
 /* 1. Precision Dotted Matrix Grid */
 .bg-dot-matrix {
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.18) 1.25px,
-    transparent 1.25px
-  );
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1.25px,
+      transparent 1.25px);
   background-size: 24px 24px;
 }
 
 /* 2. Micro Diagonal Tech Texture */
 .bg-diagonal-hatch {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(234, 255, 0, 0.025) 0,
-    rgba(234, 255, 0, 0.025) 1px,
-    transparent 1px,
-    transparent 12px
-  );
+  background-image: repeating-linear-gradient(-45deg,
+      rgba(234, 255, 0, 0.025) 0,
+      rgba(234, 255, 0, 0.025) 1px,
+      transparent 1px,
+      transparent 12px);
 }
 
 /* 3. Smooth Edge Fade Mask (Blends texture seamlessly into surrounding grid) */
 .mask-radial-fade {
-  mask-image: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    black 40%,
-    transparent 100%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 85% 65% at 50% 50%,
-    black 40%,
-    transparent 100%
-  );
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 50%,
+      black 40%,
+      transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 50%,
+      black 40%,
+      transparent 100%);
 }
 
 .mask-edge-fade-y {
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 15%,
-    black 85%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 15%,
-    black 85%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to bottom,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%);
 }
 
 /* 4. Ambient Radial Glow Mesh */
 .pricing-glow-ambient {
-  background: 
+  background:
     radial-gradient(circle at 50% 30%, rgba(234, 255, 0, 0.08) 0%, transparent 60%),
     radial-gradient(circle at 15% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 85% 70%, rgba(234, 255, 0, 0.06) 0%, transparent 50%);
@@ -120,14 +107,12 @@ body {
 /* 5. Glowing Separator Divider */
 .luminous-divider {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.06) 20%,
-    rgba(234, 255, 0, 0.45) 50%,
-    rgba(255, 255, 255, 0.06) 80%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.06) 20%,
+      rgba(234, 255, 0, 0.45) 50%,
+      rgba(255, 255, 255, 0.06) 80%,
+      transparent 100%);
 }
 
 /* 6. Pricing Card Shimmer Animation */
@@ -135,7 +120,9 @@ body {
   0% {
     transform: translateX(-150%) skewX(-25deg);
   }
-  75%, 100% {
+
+  75%,
+  100% {
     transform: translateX(250%) skewX(-25deg);
   }
 }
@@ -145,14 +132,12 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.01) 20%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.01) 80%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.01) 20%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.01) 80%,
+      transparent 100%);
   transform: translateX(-150%) skewX(-25deg);
   animation: card-shimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
@@ -164,6 +149,7 @@ body {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -182,9 +168,8 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-
