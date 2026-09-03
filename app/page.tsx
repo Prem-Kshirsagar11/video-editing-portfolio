@@ -15,74 +15,14 @@ import {
   Check,
 } from "lucide-react";
 
-export interface VideoProject {
-  id: string;
-  title: string;
-  category: string;
-  thumbnail: string;
-  videoUrl: string; // YouTube, Shorts, Vimeo, or direct MP4/WebM URL
-  description: string;
-  aspectRatio: "16:9" | "9:16";
-  duration?: string;
-}
+import { VideoProject, servicesData, projectsData, pricingData } from "@/lib/data";
 
-// ============================================================================
-// 16:9 WIDESCREEN VIDEO (LEFT SECTION)
-// Edit your 16:9 video link, title, description, and thumbnail below:
-// ============================================================================
-export const INITIAL_16_9_VIDEO: VideoProject = {
-  id: "video-16-9",
-  title: "Cinematic Travel Commercial",
-  category: "Commercial",
-  aspectRatio: "16:9",
-  thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1200&auto=format&fit=crop&q=80",
-  videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-  description: "Fast-paced sound design, speed ramps, and high-contrast color grading. Mastered in 4K DCI for commercial broadcast and high-impact web delivery.",
-  duration: "1:30",
-};
+export { type VideoProject };
 
-// ============================================================================
-// 9:16 VERTICAL VIDEO (RIGHT SECTION)
-// Edit your 9:16 video link, title, description, and thumbnail below:
-// ============================================================================
-export const INITIAL_9_16_VIDEO: VideoProject = {
-  id: "video-9-16",
-  title: "High-Retention Reel & TikTok",
-  category: "Reels / Shorts",
-  aspectRatio: "9:16",
-  thumbnail: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=800&auto=format&fit=crop&q=80",
-  videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-  description: "Sub-second hook, dynamic kinetic subtitles, and punchy sound design crafted for viral mobile retention and maximum engagement.",
-  duration: "0:45",
-};
-
-// ============================================================================
-// ROW 2: 9:16 VERTICAL VIDEO (LEFT SECTION)
-// ============================================================================
-export const INITIAL_ROW2_9_16_VIDEO: VideoProject = {
-  id: "video-row2-9-16",
-  title: "Viral Lifestyle & Fitness Reel",
-  category: "Reels / Shorts",
-  aspectRatio: "9:16",
-  thumbnail: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80",
-  videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-  description: "Rapid cut transitions, bold typography animations, and beat-synced audio designed for maximum watch time and viewer retention.",
-  duration: "0:30",
-};
-
-// ============================================================================
-// ROW 2: 16:9 WIDESCREEN VIDEO (RIGHT SECTION)
-// ============================================================================
-export const INITIAL_ROW2_16_9_VIDEO: VideoProject = {
-  id: "video-row2-16-9",
-  title: "Documentary Brand Story",
-  category: "Commercial / Doc",
-  aspectRatio: "16:9",
-  thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1200&auto=format&fit=crop&q=80",
-  videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-  description: "Narrative-driven pacing, color grading calibrated for cinematic mood, and multi-track audio soundscapes tailored for high impact.",
-  duration: "2:15",
-};
+export const INITIAL_16_9_VIDEO: VideoProject = projectsData[0];
+export const INITIAL_9_16_VIDEO: VideoProject = projectsData[1];
+export const INITIAL_ROW2_9_16_VIDEO: VideoProject = projectsData[2];
+export const INITIAL_ROW2_16_9_VIDEO: VideoProject = projectsData[3];
 
 // Formats user-provided video links into clean embed or direct video URLs
 function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe" | "video"; src: string } {
@@ -197,19 +137,19 @@ export default function Home() {
   }, []);
 
   // Left 16:9 Video & Right 9:16 Video State (Row 1)
-  const [leftVideo, setLeftVideo] = useState<VideoProject>(INITIAL_16_9_VIDEO);
-  const [rightVideo, setRightVideo] = useState<VideoProject>(INITIAL_9_16_VIDEO);
+  const [leftVideo, setLeftVideo] = useState<VideoProject>(projectsData[0] || INITIAL_16_9_VIDEO);
+  const [rightVideo, setRightVideo] = useState<VideoProject>(projectsData[1] || INITIAL_9_16_VIDEO);
 
   // Row 2: Left 9:16 Video & Right 16:9 Video State
-  const [row2LeftVideo, setRow2LeftVideo] = useState<VideoProject>(INITIAL_ROW2_9_16_VIDEO);
-  const [row2RightVideo, setRow2RightVideo] = useState<VideoProject>(INITIAL_ROW2_16_9_VIDEO);
+  const [row2LeftVideo, setRow2LeftVideo] = useState<VideoProject>(projectsData[2] || INITIAL_ROW2_9_16_VIDEO);
+  const [row2RightVideo, setRow2RightVideo] = useState<VideoProject>(projectsData[3] || INITIAL_ROW2_16_9_VIDEO);
 
   // Currently playing inline video preview ('left' | 'right' | 'row2-left' | 'row2-right' | null)
   const [playingInline, setPlayingInline] = useState<string | null>(null);
 
   // Quick edit modal state
   const [editingTarget, setEditingTarget] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<VideoProject>(INITIAL_16_9_VIDEO);
+  const [editForm, setEditForm] = useState<VideoProject>(projectsData[0] || INITIAL_16_9_VIDEO);
 
   // FAQ state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -843,27 +783,29 @@ export default function Home() {
 
             {/* Tight Flex Row for Software Tags */}
             <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-              {["DaVinci Resolve", "Audacity", "Photoshop"].map((tool) => {
-                const logoMap: Record<string, string> = {
-                  "DaVinci Resolve": "/images/davinci.png",
-                  Audacity: "/images/audacity.png",
-                  Photoshop: "/images/photoshop.png",
-                };
+              {Array.from(new Set(servicesData.flatMap((s) => s.tools)))
+                .filter((t) => ["DaVinci Resolve", "Audacity", "Photoshop"].includes(t))
+                .map((tool) => {
+                  const logoMap: Record<string, string> = {
+                    "DaVinci Resolve": "/images/davinci.png",
+                    Audacity: "/images/audacity.png",
+                    Photoshop: "/images/photoshop.png",
+                  };
 
-                return (
-                  <span
-                    key={tool}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
-                  >
-                    <img
-                      src={logoMap[tool]}
-                      alt={tool}
-                      className="w-5 h-5 rounded-sm object-cover"
-                    />
-                    {tool}
-                  </span>
-                );
-              })}
+                  return (
+                    <span
+                      key={tool}
+                      className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
+                    >
+                      <img
+                        src={logoMap[tool]}
+                        alt={tool}
+                        className="w-5 h-5 rounded-sm object-cover"
+                      />
+                      {tool}
+                    </span>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -876,95 +818,51 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
-          {/* Card 1: Short form content */}
-          <div className="bg-[#111] border border-neutral-800 rounded-xl p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold uppercase tracking-wider text-white">Short form content</h3>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-neutral-500 line-through">₹8000</span>
-                <span className="text-4xl font-bold text-white">₹4999</span>
-                <span className="text-xs text-neutral-400 font-normal">+GST</span>
-              </div>
-              <p className="text-xs text-neutral-400 mt-3 leading-relaxed">
-                Perfect for creators starting out with consistent, clean short-form content.
-              </p>
-              <button className="w-full bg-[#eaff00] text-black font-bold py-3 mt-6 mb-8 rounded hover:bg-[#d8ec00] transition-colors">
-                Contact me
-              </button>
-              <div className="text-xs text-neutral-500 mb-4 font-semibold uppercase tracking-wider">
-                {"WHAT'S INCLUDED:"}
-              </div>
-              <ul className="space-y-2.5 text-xs text-neutral-300">
-                <li>+ 4-day delivery</li>
-                <li>+ 4 Revisions</li>
-                <li>+ Up to 15 minutes of footage provided</li>
-                <li>+ Up to 1 minute running time</li>
-                <li>+ Sound design & mixing</li>
-              </ul>
-            </div>
-          </div>
+          {pricingData.map((tier) => {
+            const cardStyle =
+              tier.theme === "blue"
+                ? "bg-[#0b274a] border border-blue-900 rounded-xl p-8 relative flex flex-col justify-between"
+                : tier.theme === "red"
+                ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 rounded-xl p-8 flex flex-col justify-between"
+                : "bg-[#111] border border-neutral-800 rounded-xl p-8 flex flex-col justify-between";
 
-          {/* Card 2: Long form content */}
-          <div className="bg-[#0b274a] border border-blue-900 rounded-xl p-8 relative flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold uppercase tracking-wider text-white">long form content</h3>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-neutral-500 line-through">₹12,000</span>
-                <span className="text-4xl font-bold text-white">₹6999</span>
-                <span className="text-xs text-neutral-400 font-normal">+GST</span>
-              </div>
-              <p className="text-xs text-neutral-300 mt-3 leading-relaxed">
-                Ideal for growing brands demanding dynamic pacing, sound design, and custom graphics.
-              </p>
-              <button className="w-full bg-[#eaff00] text-black font-bold py-3 mt-6 mb-8 rounded hover:bg-[#d8ec00] transition-colors">
-                Contact me
-              </button>
-              <div className="text-xs text-neutral-500 mb-4 font-semibold uppercase tracking-wider">
-                {"WHAT'S INCLUDED:"}
-              </div>
-              <ul className="space-y-2.5 text-xs text-neutral-200">
-                <li>+ 5-day delivery</li>
-                <li>+ 7 Revisions</li>
-                <li>+ Up to 30 minutes of footage provided</li>
-                <li>+ Up to 5 minutes running time</li>
-                <li>+ Color grading</li>
-                <li>+ Sound design & mixing</li>
-                <li>+ Motion graphics</li>
-              </ul>
-            </div>
-          </div>
+            const descStyle =
+              tier.theme === "default"
+                ? "text-xs text-neutral-400 mt-3 leading-relaxed"
+                : "text-xs text-neutral-300 mt-3 leading-relaxed";
 
-          {/* Card 3: Ultimate */}
-          <div className="bg-[#5c0a0a] border-2 border-dashed border-red-600 rounded-xl p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold uppercase tracking-wider text-white">ULTIMATE</h3>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-neutral-500 line-through">₹25000</span>
-                <span className="text-4xl font-bold text-white">₹14999</span>
-                <span className="text-xs text-neutral-400 font-normal">+GST</span>
+            const listStyle =
+              tier.theme === "default"
+                ? "space-y-2.5 text-xs text-neutral-300"
+                : "space-y-2.5 text-xs text-neutral-200";
+
+            return (
+              <div key={tier.id} className={cardStyle}>
+                <div>
+                  <h3 className="text-lg font-bold uppercase tracking-wider text-white">{tier.name}</h3>
+                  <div className="mt-4 flex items-baseline gap-2">
+                    <span className="text-neutral-500 line-through">{tier.originalPrice}</span>
+                    <span className="text-4xl font-bold text-white">{tier.currentPrice}</span>
+                    {tier.taxNote && <span className="text-xs text-neutral-400 font-normal">{tier.taxNote}</span>}
+                  </div>
+                  <p className={descStyle}>
+                    {tier.description}
+                  </p>
+                  <button className="w-full bg-[#eaff00] text-black font-bold py-3 mt-6 mb-8 rounded hover:bg-[#d8ec00] transition-colors">
+                    {tier.buttonText}
+                  </button>
+                  <div className="text-xs text-neutral-500 mb-4 font-semibold uppercase tracking-wider">
+                    {"WHAT'S INCLUDED:"}
+                  </div>
+                  <ul className={listStyle}>
+                    {tier.features.map((feature, idx) => (
+                      <li key={idx}>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <p className="text-xs text-neutral-300 mt-3 leading-relaxed">
-                Full-service dedicated post-production partner for commercial scale and viral retention.
-              </p>
-              <button className="w-full bg-[#eaff00] text-black font-bold py-3 mt-6 mb-8 rounded hover:bg-[#d8ec00] transition-colors">
-                Contact me
-              </button>
-              <div className="text-xs text-neutral-500 mb-4 font-semibold uppercase tracking-wider">
-                {"WHAT'S INCLUDED:"}
-              </div>
-              <ul className="space-y-2.5 text-xs text-neutral-200">
-                <li>+ 10-day delivery</li>
-                <li>+ Unlimited Revisions</li>
-                <li>+ Up to 60 minutes of footage provided</li>
-                <li>+ Up to 10 minutes running time</li>
-                <li>+ Color grading</li>
-                <li>+ Sound design & mixing</li>
-                <li>+ Motion graphics</li>
-                <li>+ Subtitles</li>
-                <li>+ Include source file</li>
-              </ul>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 
