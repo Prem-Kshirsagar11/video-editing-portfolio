@@ -274,9 +274,9 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-28 pb-12 px-4 text-center flex flex-col items-center w-full">
+      <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-4xl mx-auto">
         {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md mb-6 shadow-sm">
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
           <svg
             className="w-4 h-4 text-[#ff4b72] shrink-0"
             viewBox="0 0 24 24"
@@ -295,48 +295,48 @@ export default function Home() {
           </span>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 text-shimmer">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-5 text-shimmer">
           Video Editing Portfolio
         </h1>
 
-        {/* Bottom Action */}
-        <p className="text-neutral-400 text-sm max-w-md mx-auto leading-relaxed">
+        {/* Subtitle & CTA */}
+        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8">
           Specialized in high-retention social content, cinematic commercials, and digital storytelling that captivates audiences.
         </p>
         <a
           href="#work"
-          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3 rounded-full mt-6 inline-block transition-all shadow-lg shadow-[#eaff00]/10 tracking-wide"
+          className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200"
         >
           View My Work
         </a>
       </section>
 
       {/* Work Grid: Dual Showcase (Left 16:9 + Right 9:16) */}
-      <section id="work" className="py-16 px-6 max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <section id="work" className="pt-6 sm:pt-8 pb-16 md:pb-24 px-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">See My Services</h2>
-            <p className="text-neutral-400 text-sm mt-1.5 font-medium tracking-wide">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">See My Services</h2>
+            <p className="text-neutral-400 text-sm md:text-base mt-2 font-medium tracking-wide">
               Showcasing 16:9 widescreen cinema and 9:16 high-retention mobile formats.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
               <Monitor className="w-3.5 h-3.5 text-[#eaff00]" /> 16:9 Landscape
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
               <Smartphone className="w-3.5 h-3.5 text-[#eaff00]" /> 9:16 Vertical
             </span>
           </div>
         </div>
 
         {/* Bento Grid: 16:9 on Left (8 cols), 9:16 on Right (4 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
           {/* ============================================================= */}
           {/* LEFT SECTION: 16:9 Widescreen Video Showcase                  */}
           {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-4 md:p-5 transition-all duration-300 flex flex-col">
+          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 16:9 Video Container (Inline Preview) */}
               {playingInline === "left" ? (
@@ -427,11 +427,11 @@ export default function Home() {
               )}
 
               {/* 16:9 Details */}
-              <div className="pt-4 pb-1">
+              <div className="pt-5 pb-1">
                 <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
                   {leftVideo.title}
                 </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-1.5 leading-relaxed font-normal">
+                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {leftVideo.description}
                 </p>
               </div>
@@ -441,7 +441,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* RIGHT SECTION: 9:16 Vertical Video Showcase                   */}
           {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-4 md:p-5 transition-all duration-300 flex flex-col">
+          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
               {playingInline === "right" ? (
@@ -537,11 +537,11 @@ export default function Home() {
               )}
 
               {/* 9:16 Details */}
-              <div className="pt-4 pb-1">
+              <div className="pt-5 pb-1">
                 <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
                   {rightVideo.title}
                 </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-1.5 leading-relaxed font-normal">
+                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {rightVideo.description}
                 </p>
               </div>
@@ -550,11 +550,11 @@ export default function Home() {
         </div>
 
         {/* Row 2: Alternating Bento Grid (Left 9:16 + Right 16:9) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch mt-6 md:mt-8">
           {/* ============================================================= */}
           {/* ROW 2 LEFT SECTION: 9:16 Vertical Video Showcase              */}
           {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-4 md:p-5 transition-all duration-300 flex flex-col">
+          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
               {playingInline === "row2-left" ? (
@@ -650,11 +650,11 @@ export default function Home() {
               )}
 
               {/* 9:16 Details */}
-              <div className="pt-4 pb-1">
+              <div className="pt-5 pb-1">
                 <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
                   {row2LeftVideo.title}
                 </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-1.5 leading-relaxed font-normal">
+                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {row2LeftVideo.description}
                 </p>
               </div>
@@ -664,7 +664,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* ROW 2 RIGHT SECTION: 16:9 Widescreen Video Showcase           */}
           {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-4 md:p-5 transition-all duration-300 flex flex-col">
+          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 16:9 Video Container (Inline Preview) */}
               {playingInline === "row2-right" ? (
@@ -754,11 +754,11 @@ export default function Home() {
               )}
 
               {/* 16:9 Details */}
-              <div className="pt-4 pb-1">
+              <div className="pt-5 pb-1">
                 <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
                   {row2RightVideo.title}
                 </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-1.5 leading-relaxed font-normal">
+                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {row2RightVideo.description}
                 </p>
               </div>
@@ -767,22 +767,22 @@ export default function Home() {
         </div>
 
         {/* Workflow Section: Wide Bento Card below Projects */}
-        <div id="about" className="mt-6 bg-[#111111] border border-neutral-800 rounded-2xl p-6 md:p-8">
+        <div id="about" className="mt-8 md:mt-10 bg-[#111111] border border-neutral-800 rounded-3xl p-6 md:p-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
                 <Scissors className="w-5 h-5 text-[#eaff00]" />
               </div>
               <div>
                 <h3 className="font-bold text-lg md:text-xl text-white tracking-tight">Tooling & Workflow</h3>
-                <p className="text-xs md:text-sm text-neutral-400 font-normal mt-0.5">
+                <p className="text-xs md:text-sm text-neutral-400 font-normal mt-1 leading-relaxed">
                   Industry-standard post-production pipeline built for speed, color fidelity, and dynamic rhythm.
                 </p>
               </div>
             </div>
 
             {/* Tight Flex Row for Software Tags */}
-            <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            <div className="flex flex-wrap items-center gap-2.5 lg:justify-end">
               {Array.from(new Set(servicesData.flatMap((s) => s.tools)))
                 .filter((t) => ["DaVinci Resolve", "Audacity", "Photoshop"].includes(t))
                 .map((tool) => {
@@ -795,7 +795,7 @@ export default function Home() {
                   return (
                     <span
                       key={tool}
-                      className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
+                      className="flex items-center gap-2.5 px-4 py-2.5 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
                     >
                       <img
                         src={logoMap[tool]}
@@ -811,59 +811,106 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-16 px-6 max-w-6xl mx-auto w-full">
-        <div className="text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">The Best Prices Ever</h2>
+      {/* Pricing Section with Texture Transition & Ambient Glow */}
+      <section id="pricing" className="relative w-full pt-12 md:pt-16 pb-20 md:pb-24 mt-4 md:mt-6 mb-12 md:mb-16 overflow-hidden">
+        {/* Top Luminous Beam Divider */}
+        <div className="absolute top-0 left-0 right-0 luminous-divider" />
+        
+        {/* Top Soft Spotlight Accent */}
+        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-36 bg-[radial-gradient(ellipse_at_top,_rgba(234,255,0,0.18),transparent_70%)] blur-2xl" />
+
+        {/* Multi-Layered Textured Background */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          {/* Solid Base Layer (Completely covers old grid) */}
+          <div className="absolute inset-0 bg-neutral-950" />
+
+          {/* Dynamic Glowing Mesh */}
+          <div className="absolute inset-0 pricing-glow-ambient" />
+
+          {/* Dotted Texture with Radial Mask for Smooth Transition */}
+          <div className="absolute inset-0 bg-dot-matrix mask-radial-fade opacity-70" />
+
+          {/* Fine Diagonal Tech Scanlines */}
+          <div className="absolute inset-0 bg-diagonal-hatch mask-edge-fade-y opacity-90" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
-          {pricingData.map((tier) => {
-            const cardStyle =
-              tier.theme === "blue"
-                ? "bg-[#0b274a] border border-blue-900 rounded-xl p-8 relative flex flex-col justify-between"
-                : tier.theme === "red"
-                ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 rounded-xl p-8 flex flex-col justify-between"
-                : "bg-[#111] border border-neutral-800 rounded-xl p-8 flex flex-col justify-between";
+        {/* Content Container */}
+        <div className="relative max-w-6xl mx-auto px-6">
+          {/* Header */}
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+              The Best Prices Ever
+            </h2>
+            <p className="text-neutral-400 text-sm md:text-base mt-3 max-w-lg mx-auto">
+              Transparent, straightforward packages tailored for high-impact content creators.
+            </p>
+          </div>
 
-            const descStyle =
-              tier.theme === "default"
-                ? "text-xs text-neutral-400 mt-3 leading-relaxed"
-                : "text-xs text-neutral-300 mt-3 leading-relaxed";
+          {/* Pricing Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
+            {pricingData.map((tier) => {
+              const cardStyle =
+                tier.theme === "blue"
+                  ? "bg-[#0b274a] border border-blue-900 rounded-2xl p-7 md:p-8 relative flex flex-col justify-between"
+                  : tier.theme === "red"
+                  ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 rounded-2xl p-7 md:p-8 flex flex-col justify-between"
+                  : "bg-[#111] border border-neutral-800 rounded-2xl p-7 md:p-8 flex flex-col justify-between";
 
-            const listStyle =
-              tier.theme === "default"
-                ? "space-y-2.5 text-xs text-neutral-300"
-                : "space-y-2.5 text-xs text-neutral-200";
+              const descStyle =
+                tier.theme === "default"
+                  ? "text-xs text-neutral-400 mt-3 leading-relaxed mb-6"
+                  : "text-xs text-neutral-300 mt-3 leading-relaxed mb-6";
 
-            return (
-              <div key={tier.id} className={cardStyle}>
-                <div>
-                  <h3 className="text-lg font-bold uppercase tracking-wider text-white">{tier.name}</h3>
-                  <div className="mt-4 flex items-baseline gap-2">
-                    <span className="text-neutral-500 line-through">{tier.originalPrice}</span>
-                    <span className="text-4xl font-bold text-white">{tier.currentPrice}</span>
-                    {tier.taxNote && <span className="text-xs text-neutral-400 font-normal">{tier.taxNote}</span>}
+              const listStyle =
+                tier.theme === "default"
+                  ? "space-y-3 text-xs text-neutral-300"
+                  : "space-y-3 text-xs text-neutral-200";
+
+              return (
+                <div key={tier.id} className={cardStyle}>
+                  <div>
+                    <h3 className="text-lg font-bold uppercase tracking-wider text-white">
+                      {tier.name}
+                    </h3>
+                    <div className="mt-4 mb-2 flex items-baseline gap-2">
+                      <span className="text-neutral-500 line-through">
+                        {tier.originalPrice}
+                      </span>
+                      <span className="text-4xl font-bold text-white">
+                        {tier.currentPrice}
+                      </span>
+                      {tier.taxNote && (
+                        <span className="text-xs text-neutral-400 font-normal">
+                          {tier.taxNote}
+                        </span>
+                      )}
+                    </div>
+                    <p className={descStyle}>
+                      {tier.description}
+                    </p>
+                    <button className="w-full bg-[#eaff00] text-black font-bold py-3 px-4 rounded-xl hover:bg-[#d8ec00] transition-colors mb-6 shadow-sm">
+                      {tier.buttonText}
+                    </button>
+                    <div className="text-xs text-neutral-500 mb-3.5 font-semibold uppercase tracking-wider">
+                      {"WHAT'S INCLUDED:"}
+                    </div>
+                    <ul className={listStyle}>
+                      {tier.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-[#eaff00] font-bold">✓</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className={descStyle}>
-                    {tier.description}
-                  </p>
-                  <button className="w-full bg-[#eaff00] text-black font-bold py-3 mt-6 mb-8 rounded hover:bg-[#d8ec00] transition-colors">
-                    {tier.buttonText}
-                  </button>
-                  <div className="text-xs text-neutral-500 mb-4 font-semibold uppercase tracking-wider">
-                    {"WHAT'S INCLUDED:"}
-                  </div>
-                  <ul className={listStyle}>
-                    {tier.features.map((feature, idx) => (
-                      <li key={idx}>{feature}</li>
-                    ))}
-                  </ul>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
+
+        {/* Bottom Luminous Beam Divider */}
+        <div className="absolute bottom-0 left-0 right-0 luminous-divider" />
       </section>
 
       {/* Interactive Quick Edit / Add Video Modal */}
@@ -874,10 +921,10 @@ export default function Home() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg bg-[#141414] border border-neutral-800 rounded-2xl p-6 shadow-2xl"
+            className="relative w-full max-w-lg bg-[#141414] border border-neutral-800 rounded-3xl p-6 sm:p-8 shadow-2xl"
           >
-            <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-5">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-6">
+              <div className="flex items-center gap-2.5">
                 {editingTarget === "left" || editingTarget === "row2-right" ? (
                   <Monitor className="w-5 h-5 text-[#eaff00]" />
                 ) : (
@@ -900,75 +947,75 @@ export default function Home() {
 
             <div className="flex flex-col gap-4 text-xs">
               <div>
-                <label className="block text-neutral-300 font-semibold mb-1 uppercase tracking-wider text-[11px]">
+                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
                   Video Title
                 </label>
                 <input
                   type="text"
                   value={editForm.title}
                   onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
                   placeholder="e.g., Cinematic Travel Commercial"
                 />
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-semibold mb-1 uppercase tracking-wider text-[11px]">
+                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
                   Category / Tag
                 </label>
                 <input
                   type="text"
                   value={editForm.category}
                   onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
                   placeholder="e.g., Commercial, YouTube, Reels"
                 />
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-semibold mb-1 uppercase tracking-wider text-[11px]">
+                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
                   Video URL (YouTube, Shorts, Vimeo, or .mp4)
                 </label>
                 <input
                   type="text"
                   value={editForm.videoUrl}
                   onChange={(e) => setEditForm({ ...editForm, videoUrl: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
                   placeholder="e.g. https://www.youtube.com/watch?v=... or .mp4 URL"
                 />
-                <span className="text-[10px] text-neutral-500 mt-1 block">
+                <span className="text-[10px] text-neutral-500 mt-1.5 block">
                   Accepts regular YouTube links, YouTube Shorts, Vimeo, or direct MP4/WebM video files.
                 </span>
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-semibold mb-1 uppercase tracking-wider text-[11px]">
+                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
                   Thumbnail / Poster Image URL (Optional)
                 </label>
                 <input
                   type="text"
                   value={editForm.thumbnail}
                   onChange={(e) => setEditForm({ ...editForm, thumbnail: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
                   placeholder="https://images.unsplash.com/..."
                 />
               </div>
 
               <div>
-                <label className="block text-neutral-300 font-semibold mb-1 uppercase tracking-wider text-[11px]">
+                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
                   Description
                 </label>
                 <textarea
                   rows={3}
                   value={editForm.description}
                   onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors leading-relaxed"
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors leading-relaxed"
                   placeholder="Describe the editing techniques, pacing, sound design..."
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-5 mt-4 border-t border-neutral-800">
+            <div className="flex items-center justify-between pt-5 mt-5 border-t border-neutral-800">
               <button
                 type="button"
                 onClick={resetToDefault}
@@ -977,18 +1024,18 @@ export default function Home() {
                 <RotateCcw className="w-3.5 h-3.5" /> Reset Default
               </button>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={() => setEditingTarget(null)}
-                  className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 rounded-lg text-xs font-semibold transition-colors"
+                  className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 rounded-xl text-xs font-semibold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={saveEditor}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#eaff00] hover:bg-[#d8ec00] text-black rounded-lg text-xs font-bold transition-all shadow-md"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#eaff00] hover:bg-[#d8ec00] text-black rounded-xl text-xs font-bold transition-all shadow-md"
                 >
                   <Check className="w-3.5 h-3.5" /> Save Changes
                 </button>
@@ -999,29 +1046,34 @@ export default function Home() {
       )}
 
       {/* FAQ Section */}
-      <section className="py-16 px-6 max-w-6xl mx-auto w-full">
-        <h2 className="text-4xl font-bold tracking-tight text-center mb-10 text-white">
-          Got Questions?
-        </h2>
-        <div className="max-w-3xl mx-auto">
+      <section className="pt-6 md:pt-10 pb-16 md:pb-20 px-6 max-w-6xl mx-auto w-full">
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+            Got Questions?
+          </h2>
+          <p className="text-neutral-400 text-base md:text-lg mt-3">
+            Everything you need to know about turnaround, revisions, and workflow.
+          </p>
+        </div>
+        <div className="max-w-4xl mx-auto space-y-4">
           {FAQS.map((faq, index) => {
             const isExpanded = openFaq === index;
             return (
               <div
                 key={index}
                 onClick={() => setOpenFaq(isExpanded ? null : index)}
-                className="bg-[#111] border border-neutral-800 rounded-xl p-5 mb-4 cursor-pointer hover:border-neutral-700 transition-colors"
+                className="bg-[#111] border border-neutral-800 rounded-2xl p-6 md:p-7 cursor-pointer hover:border-neutral-700 transition-colors"
               >
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-bold uppercase tracking-wide text-white text-sm md:text-base">
+                <div className="flex items-center justify-between gap-4 select-none">
+                  <span className="font-bold uppercase tracking-wide text-white text-base md:text-lg">
                     {faq.question}
                   </span>
-                  <div className="w-7 h-7 rounded bg-neutral-800 text-neutral-300 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-neutral-800 text-neutral-300 flex items-center justify-center shrink-0">
                     {isExpanded ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </div>
                 </div>
                 {isExpanded && (
-                  <p className="text-neutral-400 text-sm mt-4 leading-relaxed">
+                  <p className="text-neutral-400 text-base mt-4 pt-4 border-t border-neutral-800/80 leading-relaxed">
                     {faq.answer}
                   </p>
                 )}
@@ -1032,105 +1084,105 @@ export default function Home() {
       </section>
 
       {/* Contact Section & Floating Widget Wrapper */}
-      <div className="relative w-full bg-neutral-950">
+      <div className="relative w-full bg-neutral-950 border-t border-neutral-900">
         {/* Contact Section / Compact Footer */}
-        <footer ref={footerRef} id="contact" className="py-12 px-6 border-t border-neutral-900 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8 text-sm text-neutral-400">
-        {/* Left Column */}
-        <div className="flex flex-col gap-4 max-w-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
-              <Film className="w-4 h-4 text-[#eaff00]" />
+        <footer ref={footerRef} id="contact" className="py-16 md:py-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10 md:gap-16 text-sm text-neutral-400">
+          {/* Left Column */}
+          <div className="flex flex-col gap-4 max-w-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
+                <Film className="w-4 h-4 text-[#eaff00]" />
+              </div>
+              <span className="font-bold text-white text-base">YOUR NAME</span>
             </div>
-            <span className="font-bold text-white text-base">YOUR NAME</span>
-          </div>
 
-          <p className="text-xs text-neutral-400 leading-relaxed">
-            Video Editor & Motion Designer specialized in high-retention social content, commercials, and digital storytelling.
-          </p>
+            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+              Video Editor & Motion Designer specialized in high-retention social content, commercials, and digital storytelling.
+            </p>
 
-          <div className="text-xs">
-            <span className="text-neutral-500">Get in Touch: </span>
-            <a href="mailto:your-email@example.com" className="text-neutral-200 hover:text-[#eaff00] transition-colors font-medium">
-              your-email@example.com
-            </a>
-          </div>
+            <div className="text-xs sm:text-sm">
+              <span className="text-neutral-500">Get in Touch: </span>
+              <a href="mailto:your-email@example.com" className="text-neutral-200 hover:text-[#eaff00] transition-colors font-medium">
+                your-email@example.com
+              </a>
+            </div>
 
-          <div className="flex items-center gap-2 pt-1">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="p-1.5 bg-neutral-900 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-[#eaff00] transition-colors"
-            >
-              <InstagramIcon className="w-4 h-4" />
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-              className="p-1.5 bg-neutral-900 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-[#eaff00] transition-colors"
-            >
-              <YoutubeIcon className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-              className="p-1.5 bg-neutral-900 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-[#eaff00] transition-colors"
-            >
-              <TwitterIcon className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-
-        {/* Right Column: 2-Column Links Grid */}
-        <div className="grid grid-cols-2 gap-12 text-xs">
-          {/* Col 1: Sections */}
-          <div className="flex flex-col gap-3">
-            <span className="text-white font-bold tracking-wider uppercase text-[11px]">Sections</span>
-            <div className="flex flex-col gap-2">
-              <a href="#work" className="hover:text-[#eaff00] transition-colors">See My Services</a>
-              <a href="#about" className="hover:text-[#eaff00] transition-colors">Tooling & Workflow</a>
-              <a href="#contact" className="hover:text-[#eaff00] transition-colors">Contact</a>
+            <div className="flex items-center gap-2.5 pt-1">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4" />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+              >
+                <YoutubeIcon className="w-4 h-4" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
+                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+              >
+                <TwitterIcon className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
-          {/* Col 2: Pages */}
-          <div className="flex flex-col gap-3">
-            <span className="text-white font-bold tracking-wider uppercase text-[11px]">Pages</span>
-            <div className="flex flex-col gap-2">
-              <a href="#" className="hover:text-[#eaff00] transition-colors">Home</a>
-              <a href="#work" className="hover:text-[#eaff00] transition-colors">Archive</a>
-              <a href="#" className="hover:text-[#eaff00] transition-colors">Showreel</a>
+          {/* Right Column: 2-Column Links Grid */}
+          <div className="grid grid-cols-2 gap-10 sm:gap-16 text-xs sm:text-sm">
+            {/* Col 1: Sections */}
+            <div className="flex flex-col gap-3">
+              <span className="text-white font-bold tracking-wider uppercase text-xs">Sections</span>
+              <div className="flex flex-col gap-2.5">
+                <a href="#work" className="hover:text-[#eaff00] transition-colors py-0.5">See My Services</a>
+                <a href="#about" className="hover:text-[#eaff00] transition-colors py-0.5">Tooling &amp; Workflow</a>
+                <a href="#contact" className="hover:text-[#eaff00] transition-colors py-0.5">Contact</a>
+              </div>
+            </div>
+
+            {/* Col 2: Pages */}
+            <div className="flex flex-col gap-3">
+              <span className="text-white font-bold tracking-wider uppercase text-xs">Pages</span>
+              <div className="flex flex-col gap-2.5">
+                <a href="#" className="hover:text-[#eaff00] transition-colors py-0.5">Home</a>
+                <a href="#work" className="hover:text-[#eaff00] transition-colors py-0.5">Archive</a>
+                <a href="#" className="hover:text-[#eaff00] transition-colors py-0.5">Showreel</a>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
 
-      {/* Floating Message Widget */}
-      <a
-        href="mailto:your-email@example.com"
-        onClick={() => {
-          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-        }}
-        className={`left-6 z-50 flex items-center gap-3 bg-white text-black p-2 pr-6 rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-all duration-300 no-underline ${isDocked ? 'absolute -top-8' : 'fixed bottom-6'}`}
-      >
-        <div className="relative">
-          <img
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80"
-            alt="Avatar"
-            className="w-12 h-12 rounded-full object-cover"
-          />
-          <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-400 border-2 border-white rounded-full" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-bold">Message Your Name</span>
-          <span className="text-xs text-gray-500 font-medium">Away • Avg. response time: 1 Hour</span>
-        </div>
-      </a>
+        {/* Floating Message Widget */}
+        <a
+          href="mailto:your-email@example.com"
+          onClick={() => {
+            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className={`left-6 z-50 flex items-center gap-3.5 bg-white text-black p-2.5 pr-6 rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-all duration-300 no-underline ${isDocked ? 'absolute -top-10' : 'fixed bottom-6'}`}
+        >
+          <div className="relative">
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80"
+              alt="Avatar"
+              className="w-12 h-12 rounded-full object-cover"
+            />
+            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-400 border-2 border-white rounded-full" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold">Message Your Name</span>
+            <span className="text-xs text-gray-500 font-medium">Away • Avg. response time: 1 Hour</span>
+          </div>
+        </a>
       </div>
     </div>
   );
