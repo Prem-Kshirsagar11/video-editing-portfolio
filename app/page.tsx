@@ -15,7 +15,7 @@ import {
   Check,
 } from "lucide-react";
 
-import { VideoProject, servicesData, projectsData, pricingData } from "@/lib/data";
+import { VideoProject, servicesData, projectsData, pricingData, heroBadgeData } from "@/lib/data";
 
 export { type VideoProject };
 
@@ -23,6 +23,46 @@ export const INITIAL_16_9_VIDEO: VideoProject = projectsData[0];
 export const INITIAL_9_16_VIDEO: VideoProject = projectsData[1];
 export const INITIAL_ROW2_9_16_VIDEO: VideoProject = projectsData[2];
 export const INITIAL_ROW2_16_9_VIDEO: VideoProject = projectsData[3];
+
+// Hero Video Carousel Data
+const HERO_CAROUSEL_VIDEOS = [
+  {
+    id: "hero-vid-1",
+    title: "Cinematic Ocean Grade",
+    tag: "4K CINEMATIC",
+    videoUrl: "https://vjs.zencdn.net/v/oceans.mp4",
+  },
+  {
+    id: "hero-vid-2",
+    title: "Motion & Animation",
+    tag: "VFX / 3D",
+    videoUrl: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+  },
+  {
+    id: "hero-vid-3",
+    title: "Macro Color Grading",
+    tag: "COLOR GRADE",
+    videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+  },
+  {
+    id: "hero-vid-4",
+    title: "High-Retention Cut",
+    tag: "VIRAL REEL",
+    videoUrl: "https://samplelib.com/preview/mp4/sample-5s.mp4",
+  },
+  {
+    id: "hero-vid-5",
+    title: "Commercial Sequence",
+    tag: "COMMERCIAL",
+    videoUrl: "https://samplelib.com/preview/mp4/sample-10s.mp4",
+  },
+  {
+    id: "hero-vid-6",
+    title: "Dynamic Action Flow",
+    tag: "SOUND & PACING",
+    videoUrl: "https://samplelib.com/preview/mp4/sample-20s.mp4",
+  },
+];
 
 // Formats user-provided video links into clean embed or direct video URLs
 function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe" | "video"; src: string } {
@@ -125,15 +165,19 @@ function TwitterIcon({ className = "w-4 h-4" }: { className?: string }) {
 }
 
 export default function Home() {
-  const footerRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
   const [isDocked, setIsDocked] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsDocked(entry.isIntersecting);
-    }, { rootMargin: "0px 0px 140px 0px" });
-    if (footerRef.current) observer.observe(footerRef.current);
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      if (!contactRef.current) return;
+      const rect = contactRef.current.getBoundingClientRect();
+      setIsDocked(rect.top <= window.innerHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Left 16:9 Video & Right 9:16 Video State (Row 1)
@@ -278,32 +322,70 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
-        {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md -translate-y-2.5 mb-6 sm:mb-8 shadow-sm">
-          <svg
-            className="w-3.5 h-3.5 text-[#ff4b72] shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M13 2C13 6.5 9.5 10 5 10C9.5 10 13 13.5 13 18C13 13.5 16.5 10 21 10C16.5 10 13 6.5 13 2Z" />
-            <circle cx="5" cy="18.5" r="1.2" strokeWidth="2" />
-            <path d="M19.5 2.5v4M17.5 4.5h4" strokeWidth="2" />
-          </svg>
-          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-neutral-200">
-            AVAILABLE FOR FREELANCE &amp; REMOTE WORK
+        {/* Profile / Intro Capsule Badge */}
+        <div className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1 rounded-full bg-[#10131a]/80 border border-neutral-700/60 backdrop-blur-md -translate-y-2.5 mb-6 sm:mb-8 shadow-sm hover:border-neutral-500/80 transition-all">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden shrink-0 bg-neutral-800 ring-1 ring-white/15">
+            <img
+              src={heroBadgeData.imageUrl || "/images/avatar.png"}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <span className="text-xs sm:text-[13px] font-semibold text-neutral-100 tracking-normal font-sans antialiased">
+            {heroBadgeData.text}
           </span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 text-shimmer whitespace-nowrap">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 text-shimmer whitespace-nowrap -translate-y-6">
           Video Editing Portfolio
         </h1>
 
+        {/* Looped Video Carousel */}
+        <div className="w-full max-w-5xl my-2 sm:my-3 relative overflow-hidden py-2 -translate-y-3">
+          {/* Subtle Side Fade Overlays for seamless edge blending */}
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
+
+          {/* Continuous Looping Video Track */}
+          <div className="hero-video-track gap-3.5 sm:gap-4 items-center">
+            {[...HERO_CAROUSEL_VIDEOS, ...HERO_CAROUSEL_VIDEOS].map((vid, idx) => (
+              <div
+                key={`${vid.id}-${idx}`}
+                className="group relative w-[190px] sm:w-[230px] md:w-[260px] aspect-[16/10] shrink-0 rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-[#eaff00]/60 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2),0_10px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_25px_rgba(0,0,0,0.3),0_12px_35px_rgba(0,0,0,0.2)] hover:scale-[1.03]"
+              >
+                <video
+                  src={vid.videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                {/* Subtle Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Top Badge */}
+                <div className="absolute top-2 left-2 pointer-events-none">
+                  <span className="px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[9px] font-bold text-[#eaff00] tracking-wider uppercase">
+                    {vid.tag}
+                  </span>
+                </div>
+
+                {/* Bottom Info Bar */}
+                <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                  <span className="text-[11px] sm:text-xs font-semibold text-neutral-200 truncate group-hover:text-white transition-colors">
+                    {vid.title}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Subtitle & CTA */}
-        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8">
+        <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8 mt-2 sm:mt-4">
           Specialized in high-retention social content, cinematic commercials, and digital storytelling that captivates audiences.
         </p>
         <a
@@ -1069,8 +1151,8 @@ export default function Home() {
                 key={index}
                 onClick={() => setOpenFaq(isExpanded ? null : index)}
                 className={`group bg-[#111] border rounded-2xl p-6 md:p-7 cursor-pointer transition-all duration-300 ${isExpanded
-                    ? "border-[#eaff00]/40 bg-[#141414] shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
-                    : "border-neutral-800 hover:border-neutral-700 hover:bg-[#151515]"
+                  ? "border-[#eaff00]/40 bg-[#141414] shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                  : "border-neutral-800 hover:border-neutral-700 hover:bg-[#151515]"
                   }`}
               >
                 <div className="flex items-center justify-between gap-4 select-none">
@@ -1080,8 +1162,8 @@ export default function Home() {
                   </span>
                   <div
                     className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isExpanded
-                        ? "bg-[#eaff00] text-black rotate-45 shadow-[0_0_12px_rgba(234,255,0,0.25)]"
-                        : "bg-neutral-800 text-neutral-300 group-hover:bg-neutral-700 group-hover:text-white rotate-0"
+                      ? "bg-[#eaff00] text-black rotate-45 shadow-[0_0_12px_rgba(234,255,0,0.25)]"
+                      : "bg-neutral-800 text-neutral-300 group-hover:bg-neutral-700 group-hover:text-white rotate-0"
                       }`}
                   >
                     <Plus className="w-4 h-4 transition-transform duration-300" />
@@ -1104,14 +1186,14 @@ export default function Home() {
       </section>
 
       {/* Contact Section & Floating Widget Wrapper */}
-      <div className="relative w-full bg-neutral-950 border-t-2 border-neutral-700/60">
+      <div ref={contactRef} className="relative w-full bg-neutral-950 border-t-2 border-neutral-700/60 mt-8 md:mt-12">
         {/* Contact Section / Compact Footer */}
-        <footer ref={footerRef} id="contact" className="py-16 md:py-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10 md:gap-16 text-sm text-neutral-400">
+        <footer id="contact" className="py-8 md:py-10 px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 md:gap-12 text-sm text-neutral-400">
           {/* Left Column */}
-          <div className="flex flex-col gap-4 max-w-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
-                <Film className="w-4 h-4 text-[#eaff00]" />
+          <div className="flex flex-col gap-2.5 max-w-sm">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
+                <Film className="w-3.5 h-3.5 text-[#eaff00]" />
               </div>
               <span className="font-bold text-white text-base">YOUR NAME</span>
             </div>
@@ -1127,13 +1209,13 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="flex items-center gap-2.5 pt-1">
+            <div className="flex items-center gap-2 pt-0.5">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
               >
                 <InstagramIcon className="w-4 h-4" />
               </a>
@@ -1142,7 +1224,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
               >
                 <YoutubeIcon className="w-4 h-4" />
               </a>
@@ -1151,7 +1233,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
-                className="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
               >
                 <TwitterIcon className="w-4 h-4" />
               </a>
@@ -1159,11 +1241,11 @@ export default function Home() {
           </div>
 
           {/* Right Column: 2-Column Links Grid */}
-          <div className="grid grid-cols-2 gap-10 sm:gap-16 text-xs sm:text-sm">
+          <div className="grid grid-cols-2 gap-8 sm:gap-12 text-xs sm:text-sm">
             {/* Col 1: Sections */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <span className="text-white font-bold tracking-wider uppercase text-xs">Sections</span>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-1.5">
                 <a href="#work" className="hover:text-[#eaff00] transition-colors py-0.5">See My Services</a>
                 <a href="#about" className="hover:text-[#eaff00] transition-colors py-0.5">Tooling &amp; Workflow</a>
                 <a href="#contact" className="hover:text-[#eaff00] transition-colors py-0.5">Contact</a>
@@ -1171,9 +1253,9 @@ export default function Home() {
             </div>
 
             {/* Col 2: Pages */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <span className="text-white font-bold tracking-wider uppercase text-xs">Pages</span>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-1.5">
                 <a href="#" className="hover:text-[#eaff00] transition-colors py-0.5">Home</a>
                 <a href="#work" className="hover:text-[#eaff00] transition-colors py-0.5">Archive</a>
                 <a href="#" className="hover:text-[#eaff00] transition-colors py-0.5">Showreel</a>
@@ -1188,7 +1270,8 @@ export default function Home() {
           onClick={() => {
             document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
           }}
-          className={`left-6 z-50 flex items-center gap-3.5 bg-white text-black p-2.5 pr-6 rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-all duration-300 no-underline ${isDocked ? 'absolute -top-10' : 'fixed bottom-6'}`}
+          className={`left-6 z-50 flex items-center gap-3.5 bg-white text-black p-2.5 pr-6 rounded-full shadow-[0_12px_36px_rgba(0,0,0,0.85)] cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-300 ease-out no-underline ${isDocked ? "absolute bottom-[calc(100%+1.5rem)]" : "fixed bottom-6"
+            }`}
         >
           <div className="relative">
             <img

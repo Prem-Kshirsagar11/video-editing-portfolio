@@ -16,6 +16,11 @@ export interface VideoProject {
   duration?: string;
 }
 
+export interface HeroBadgeConfig {
+  imageUrl: string;
+  text: string;
+}
+
 export interface PricingTier {
   id: string;
   name: string;
@@ -28,6 +33,17 @@ export interface PricingTier {
   isPopular?: boolean;
   theme: "default" | "blue" | "red";
 }
+
+// -------------------------------------------------------------
+// PROFILE BADGE CONFIGURATION
+// To change your avatar:
+// 1. Put your image in /portfolio/public/images/ (e.g., /images/avatar.png)
+// 2. Or paste any direct image URL below
+// -------------------------------------------------------------
+export const heroBadgeData: HeroBadgeConfig = {
+  imageUrl: "/images/avatar.png",
+  text: "AVAILABLE FOR FREELANCE WORK",
+};
 
 export const servicesData: Service[] = [
   {
