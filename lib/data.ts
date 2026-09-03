@@ -42,7 +42,7 @@ export interface PricingTier {
 // -------------------------------------------------------------
 export const heroBadgeData: HeroBadgeConfig = {
   imageUrl: "/images/avatar.png",
-  text: "AVAILABLE FOR FREELANCE WORK",
+  text: "Available for Freelance Work",
 };
 
 export const servicesData: Service[] = [

@@ -13,6 +13,7 @@ import {
   Smartphone,
   RotateCcw,
   Check,
+  Menu,
 } from "lucide-react";
 
 import { VideoProject, servicesData, projectsData, pricingData, heroBadgeData } from "@/lib/data";
@@ -198,6 +199,9 @@ export default function Home() {
   // FAQ state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  // Mobile menu state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   // Load custom values from localStorage if user saved edits
   useEffect(() => {
     try {
@@ -284,17 +288,17 @@ export default function Home() {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-6 left-0 right-0 mx-auto w-[90%] max-w-4xl h-14 z-40 rounded-2xl bg-neutral-950/80 backdrop-blur-md border border-neutral-800 px-6 md:px-8 shadow-2xl flex items-center justify-between">
+      <nav className="fixed top-4 sm:top-6 left-0 right-0 mx-auto w-[92%] sm:w-[90%] max-w-4xl h-14 z-40 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 px-4 sm:px-6 md:px-8 shadow-2xl flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex-1 flex items-center justify-start">
-          <div className="text-sm md:text-base tracking-tight flex items-center gap-2 font-bold text-white">
+          <a href="#" className="text-sm md:text-base tracking-tight flex items-center gap-2 font-bold text-white">
             <Film className="w-4 h-4 text-[#eaff00]" />
             <span>YOUR NAME</span>
-          </div>
+          </a>
         </div>
 
         {/* Center: Navigation Links */}
-        <div className="flex items-center justify-center gap-6 md:gap-8 font-bold text-xs uppercase tracking-widest">
+        <div className="hidden md:flex items-center justify-center gap-6 md:gap-8 font-bold text-xs uppercase tracking-widest">
           <a href="#work" className="text-neutral-400 hover:text-white transition-colors">
             Work
           </a>
@@ -309,21 +313,73 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Right: CTA Button */}
-        <div className="flex-1 flex items-center justify-end">
+        {/* Right: CTA Button & Mobile Toggle */}
+        <div className="flex-1 flex items-center justify-end gap-2.5">
           <a
             href="#contact"
-            className="py-1.5 px-4 md:px-5 bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-sm"
+            className="hidden sm:inline-flex py-1.5 px-4 md:px-5 bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-sm"
           >
             Get in Touch
           </a>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl text-neutral-300 hover:text-white bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-colors focus:outline-none"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
         </div>
       </nav>
 
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed top-20 left-0 right-0 mx-auto w-[92%] max-w-md z-40 rounded-2xl bg-neutral-950/95 backdrop-blur-xl border border-neutral-800 p-5 shadow-2xl flex flex-col gap-3 md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <a
+            href="#work"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
+          >
+            Work
+          </a>
+          <a
+            href="#about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
+          >
+            Workflow
+          </a>
+          <a
+            href="#pricing"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
+          >
+            Prices
+          </a>
+          <a
+            href="#faq"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
+          >
+            FAQ
+          </a>
+          <div className="pt-2 border-t border-neutral-800">
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-center block py-2.5 px-4 bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-sm"
+            >
+              Get in Touch
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
-      <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
+      <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-4 sm:px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
         {/* Profile / Intro Capsule Badge */}
-        <div className="inline-flex items-center gap-2.5 pl-1.5 pr-4 py-1 rounded-full bg-[#10131a]/80 border border-neutral-700/60 backdrop-blur-md -translate-y-2.5 mb-6 sm:mb-8 shadow-sm hover:border-neutral-500/80 transition-all">
+        <div className="inline-flex items-center gap-2 sm:gap-2.5 pl-1.5 pr-3.5 sm:pr-4 py-1 rounded-full bg-[#10131a]/80 border border-neutral-700/60 backdrop-blur-md -translate-y-2.5 mb-6 sm:mb-8 shadow-sm hover:border-neutral-500/80 transition-all max-w-[95%]">
           <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden shrink-0 bg-neutral-800 ring-1 ring-white/15">
             <img
               src={heroBadgeData.imageUrl || "/images/avatar.png"}
@@ -331,27 +387,27 @@ export default function Home() {
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="text-xs sm:text-[13px] font-semibold text-neutral-100 tracking-normal font-sans antialiased">
+          <span className="text-[11px] sm:text-[13px] font-semibold text-neutral-100 tracking-normal font-sans antialiased truncate">
             {heroBadgeData.text}
           </span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 text-shimmer whitespace-nowrap -translate-y-6">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 text-shimmer whitespace-normal sm:whitespace-nowrap -translate-y-6 max-w-full px-2">
           Video Editing Portfolio
         </h1>
 
         {/* Looped Video Carousel */}
         <div className="w-full max-w-5xl my-2 sm:my-3 relative overflow-hidden py-2 -translate-y-3">
           {/* Subtle Side Fade Overlays for seamless edge blending */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-20" />
 
           {/* Continuous Looping Video Track */}
-          <div className="hero-video-track gap-3.5 sm:gap-4 items-center">
+          <div className="hero-video-track gap-3 sm:gap-4 items-center">
             {[...HERO_CAROUSEL_VIDEOS, ...HERO_CAROUSEL_VIDEOS].map((vid, idx) => (
               <div
                 key={`${vid.id}-${idx}`}
-                className="group relative w-[190px] sm:w-[230px] md:w-[260px] aspect-[16/10] shrink-0 rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-[#eaff00]/60 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2),0_10px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_25px_rgba(0,0,0,0.3),0_12px_35px_rgba(0,0,0,0.2)] hover:scale-[1.03]"
+                className="group relative w-[170px] sm:w-[230px] md:w-[260px] aspect-[16/10] shrink-0 rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-[#eaff00]/60 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2),0_10px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_25px_rgba(0,0,0,0.3),0_12px_35px_rgba(0,0,0,0.2)] hover:scale-[1.03]"
               >
                 <video
                   src={vid.videoUrl}
@@ -397,20 +453,20 @@ export default function Home() {
       </section>
 
       {/* Work Grid: Dual Showcase (Left 16:9 + Right 9:16) */}
-      <section id="work" className="pt-6 sm:pt-8 pb-6 md:pb-8 px-6 max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+      <section id="work" className="pt-6 sm:pt-8 pb-6 md:pb-8 px-4 sm:px-6 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 gap-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">See My Services</h2>
-            <p className="text-neutral-400 text-sm md:text-base mt-2 font-medium tracking-wide">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">See My Services</h2>
+            <p className="text-neutral-400 text-xs sm:text-sm md:text-base mt-2 font-medium tracking-wide">
               Showcasing 16:9 widescreen cinema and 9:16 high-retention mobile formats.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-[11px] sm:text-xs font-semibold">
               <Monitor className="w-3.5 h-3.5 text-[#eaff00]" /> 16:9 Landscape
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-[11px] sm:text-xs font-semibold">
               <Smartphone className="w-3.5 h-3.5 text-[#eaff00]" /> 9:16 Vertical
             </span>
           </div>
@@ -421,7 +477,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* LEFT SECTION: 16:9 Widescreen Video Showcase                  */}
           {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
+          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 16:9 Video Container (Inline Preview) */}
               {playingInline === "left" ? (
@@ -526,7 +582,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* RIGHT SECTION: 9:16 Vertical Video Showcase                   */}
           {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
+          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
               {playingInline === "right" ? (
@@ -639,7 +695,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* ROW 2 LEFT SECTION: 9:16 Vertical Video Showcase              */}
           {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
+          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
               {playingInline === "row2-left" ? (
@@ -749,7 +805,7 @@ export default function Home() {
           {/* ============================================================= */}
           {/* ROW 2 RIGHT SECTION: 16:9 Widescreen Video Showcase           */}
           {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-3xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
+          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* 16:9 Video Container (Inline Preview) */}
               {playingInline === "row2-right" ? (
@@ -852,14 +908,14 @@ export default function Home() {
         </div>
 
         {/* Workflow Section: Wide Bento Card below Projects */}
-        <div id="about" className="mt-8 md:mt-10 bg-[#111111] border border-neutral-800 rounded-3xl p-6 md:p-8">
+        <div id="about" className="mt-8 md:mt-10 bg-[#111111] border border-neutral-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3.5 sm:gap-4">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
                 <Scissors className="w-5 h-5 text-[#eaff00]" />
               </div>
               <div>
-                <h3 className="font-bold text-lg md:text-xl text-white tracking-tight">Tooling & Workflow</h3>
+                <h3 className="font-bold text-base sm:text-lg md:text-xl text-white tracking-tight">Tooling &amp; Workflow</h3>
                 <p className="text-xs md:text-sm text-neutral-400 font-normal mt-1 leading-relaxed">
                   Industry-standard post-production pipeline built for speed, color fidelity, and dynamic rhythm.
                 </p>
@@ -867,7 +923,7 @@ export default function Home() {
             </div>
 
             {/* Tight Flex Row for Software Tags */}
-            <div className="flex flex-wrap items-center gap-2.5 lg:justify-end">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 lg:justify-end">
               {Array.from(new Set(servicesData.flatMap((s) => s.tools)))
                 .filter((t) => ["DaVinci Resolve", "Audacity", "Photoshop"].includes(t))
                 .map((tool) => {
@@ -880,12 +936,12 @@ export default function Home() {
                   return (
                     <span
                       key={tool}
-                      className="flex items-center gap-2.5 px-4 py-2.5 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
+                      className="flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 bg-[#111] border border-neutral-800 rounded-xl text-neutral-300 font-bold text-xs tracking-tight hover:border-neutral-700 hover:text-white transition-all shadow-sm"
                     >
                       <img
                         src={logoMap[tool]}
                         alt={tool}
-                        className="w-5 h-5 rounded-sm object-cover"
+                        className="w-4 h-4 sm:w-5 sm:h-5 rounded-sm object-cover"
                       />
                       {tool}
                     </span>
@@ -920,13 +976,13 @@ export default function Home() {
         </div>
 
         {/* Content Container */}
-        <div className="relative max-w-6xl mx-auto px-6">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
           {/* Header */}
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
               The Best Prices Ever
             </h2>
-            <p className="text-neutral-400 text-sm md:text-base mt-3 max-w-lg mx-auto">
+            <p className="text-neutral-400 text-xs sm:text-sm md:text-base mt-2.5 sm:mt-3 max-w-lg mx-auto">
               Transparent, straightforward packages tailored for high-impact content creators.
             </p>
           </div>
@@ -936,10 +992,10 @@ export default function Home() {
             {pricingData.map((tier, idx) => {
               const cardStyle =
                 tier.theme === "blue"
-                  ? "bg-[#0b274a] border border-blue-900 hover:border-blue-500/60 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-blue-950/70"
+                  ? "bg-[#0b274a] border border-blue-900 hover:border-blue-500/60 rounded-2xl p-6 sm:p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-blue-950/70"
                   : tier.theme === "red"
-                    ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 hover:border-red-500 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-red-950/70"
-                    : "bg-[#111] border border-neutral-800 hover:border-neutral-700 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-black/80";
+                    ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 hover:border-red-500 rounded-2xl p-6 sm:p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-red-950/70"
+                    : "bg-[#111] border border-neutral-800 hover:border-neutral-700 rounded-2xl p-6 sm:p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-black/80";
 
               const descStyle =
                 tier.theme === "default"
@@ -1005,11 +1061,11 @@ export default function Home() {
       {editingTarget && (
         <div
           onClick={() => setEditingTarget(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg bg-[#141414] border border-neutral-800 rounded-3xl p-6 sm:p-8 shadow-2xl"
+            className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-[#141414] border border-neutral-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl"
           >
             <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-6">
               <div className="flex items-center gap-2.5">
@@ -1134,39 +1190,39 @@ export default function Home() {
       )}
 
       {/* FAQ Section */}
-      <section id="faq" className="pt-6 md:pt-10 pb-16 md:pb-20 px-6 max-w-6xl mx-auto w-full">
-        <div className="text-center mb-10 md:mb-14">
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
+      <section id="faq" className="pt-6 md:pt-10 pb-16 md:pb-20 px-4 sm:px-6 max-w-6xl mx-auto w-full">
+        <div className="text-center mb-8 sm:mb-10 md:mb-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
             Got Questions?
           </h2>
-          <p className="text-neutral-400 text-base md:text-lg mt-3">
+          <p className="text-neutral-400 text-sm sm:text-base md:text-lg mt-2 sm:mt-3">
             Everything you need to know about turnaround, revisions, and workflow.
           </p>
         </div>
-        <div className="max-w-4xl mx-auto space-y-4">
+        <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
           {FAQS.map((faq, index) => {
             const isExpanded = openFaq === index;
             return (
               <div
                 key={index}
                 onClick={() => setOpenFaq(isExpanded ? null : index)}
-                className={`group bg-[#111] border rounded-2xl p-6 md:p-7 cursor-pointer transition-all duration-300 ${isExpanded
+                className={`group bg-[#111] border rounded-2xl p-4 sm:p-6 md:p-7 cursor-pointer transition-all duration-300 ${isExpanded
                   ? "border-[#eaff00]/40 bg-[#141414] shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
                   : "border-neutral-800 hover:border-neutral-700 hover:bg-[#151515]"
                   }`}
               >
-                <div className="flex items-center justify-between gap-4 select-none">
-                  <span className={`font-bold uppercase tracking-wide text-base md:text-lg transition-colors duration-200 ${isExpanded ? "text-white" : "text-white group-hover:text-neutral-200"
+                <div className="flex items-center justify-between gap-3 sm:gap-4 select-none">
+                  <span className={`font-bold uppercase tracking-wide text-sm sm:text-base md:text-lg transition-colors duration-200 ${isExpanded ? "text-white" : "text-white group-hover:text-neutral-200"
                     }`}>
                     {faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isExpanded
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${isExpanded
                       ? "bg-[#eaff00] text-black rotate-45 shadow-[0_0_12px_rgba(234,255,0,0.25)]"
                       : "bg-neutral-800 text-neutral-300 group-hover:bg-neutral-700 group-hover:text-white rotate-0"
                       }`}
                   >
-                    <Plus className="w-4 h-4 transition-transform duration-300" />
+                    <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300" />
                   </div>
                 </div>
                 <div
@@ -1174,7 +1230,7 @@ export default function Home() {
                     }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="text-neutral-400 text-base pt-4 mt-4 border-t border-neutral-800/80 leading-relaxed">
+                    <p className="text-neutral-400 text-xs sm:text-sm md:text-base pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-neutral-800/80 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -1188,7 +1244,7 @@ export default function Home() {
       {/* Contact Section & Floating Widget Wrapper */}
       <div ref={contactRef} className="relative w-full bg-neutral-950 border-t-2 border-neutral-700/60 mt-8 md:mt-12">
         {/* Contact Section / Compact Footer */}
-        <footer id="contact" className="py-8 md:py-10 px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 md:gap-12 text-sm text-neutral-400">
+        <footer id="contact" className="py-8 md:py-10 px-4 sm:px-6 max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8 sm:gap-10 md:gap-12 text-sm text-neutral-400">
           {/* Left Column */}
           <div className="flex flex-col gap-2.5 max-w-sm">
             <div className="flex items-center gap-2.5">
@@ -1241,7 +1297,7 @@ export default function Home() {
           </div>
 
           {/* Right Column: 2-Column Links Grid */}
-          <div className="grid grid-cols-2 gap-8 sm:gap-12 text-xs sm:text-sm">
+          <div className="grid grid-cols-2 gap-6 sm:gap-12 text-xs sm:text-sm">
             {/* Col 1: Sections */}
             <div className="flex flex-col gap-2">
               <span className="text-white font-bold tracking-wider uppercase text-xs">Sections</span>
@@ -1270,20 +1326,20 @@ export default function Home() {
           onClick={() => {
             document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
           }}
-          className={`left-6 z-50 flex items-center gap-3.5 bg-white text-black p-2.5 pr-6 rounded-full shadow-[0_12px_36px_rgba(0,0,0,0.85)] cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-300 ease-out no-underline ${isDocked ? "absolute bottom-[calc(100%+1.5rem)]" : "fixed bottom-6"
+          className={`left-4 sm:left-6 z-50 flex items-center gap-2.5 sm:gap-3.5 bg-white text-black p-2 pr-4 sm:p-2.5 sm:pr-6 rounded-full shadow-[0_12px_36px_rgba(0,0,0,0.85)] cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-300 ease-out no-underline max-w-[calc(100%-2rem)] sm:max-w-none ${isDocked ? "absolute bottom-[calc(100%+1.5rem)]" : "fixed bottom-4 sm:bottom-6"
             }`}
         >
-          <div className="relative">
+          <div className="relative shrink-0">
             <img
               src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80"
               alt="Avatar"
-              className="w-12 h-12 rounded-full object-cover"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
             />
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-400 border-2 border-white rounded-full" />
+            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-gray-400 border-2 border-white rounded-full" />
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold">Message Your Name</span>
-            <span className="text-xs text-gray-500 font-medium">Away • Avg. response time: 1 Hour</span>
+          <div className="flex flex-col min-w-0">
+            <span className="text-xs sm:text-sm font-bold truncate">Message Your Name</span>
+            <span className="text-[10px] sm:text-xs text-gray-500 font-medium truncate">Away • Avg. response time: 1 Hour</span>
           </div>
         </a>
       </div>
