@@ -65,6 +65,29 @@ const HERO_CAROUSEL_VIDEOS = [
   },
 ];
 
+// Extracts YouTube video ID if present
+export function extractYoutubeId(url: string): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  const shortsMatch = trimmed.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch && shortsMatch[1]) return shortsMatch[1];
+  const ytMatch = trimmed.match(
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+  );
+  if (ytMatch && ytMatch[1]) return ytMatch[1];
+  return null;
+}
+
+// Automatically gets high-res YouTube thumbnail if no custom thumbnail is provided
+export function getVideoThumbnail(thumbnail?: string, videoUrl?: string): string {
+  if (thumbnail && thumbnail.trim()) return thumbnail.trim();
+  const ytId = extractYoutubeId(videoUrl || "");
+  if (ytId) {
+    return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+  }
+  return "";
+}
+
 // Formats user-provided video links into clean embed or direct video URLs
 function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe" | "video"; src: string } {
   if (!url) return { type: "video", src: "" };
@@ -80,12 +103,15 @@ function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe"
     return { type: "video", src: trimmed };
   }
 
+  // Clean parameters for YouTube: privacy-enhanced, no related videos from other channels, no branding clutter
+  const ytParams = `autoplay=${autoplay ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&color=white`;
+
   // YouTube Shorts: youtube.com/shorts/VIDEO_ID
   const shortsMatch = trimmed.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
   if (shortsMatch && shortsMatch[1]) {
     return {
       type: "iframe",
-      src: `https://www.youtube-nocookie.com/embed/${shortsMatch[1]}?autoplay=${autoplay ? 1 : 0}&rel=0`,
+      src: `https://www.youtube-nocookie.com/embed/${shortsMatch[1]}?${ytParams}`,
     };
   }
 
@@ -96,7 +122,7 @@ function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe"
   if (ytMatch && ytMatch[1]) {
     return {
       type: "iframe",
-      src: `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=${autoplay ? 1 : 0}&rel=0`,
+      src: `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?${ytParams}`,
     };
   }
 
@@ -105,14 +131,14 @@ function formatVideoUrl(url: string, autoplay: boolean = true): { type: "iframe"
   if (vimeoMatch && vimeoMatch[1]) {
     return {
       type: "iframe",
-      src: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=${autoplay ? 1 : 0}`,
+      src: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=${autoplay ? 1 : 0}&dnt=1`,
     };
   }
 
   // If already an embed URL (e.g. youtube embed), ensure autoplay parameter
   if (trimmed.includes("embed") && autoplay && !trimmed.includes("autoplay=")) {
     const separator = trimmed.includes("?") ? "&" : "?";
-    return { type: "iframe", src: `${trimmed}${separator}autoplay=1` };
+    return { type: "iframe", src: `${trimmed}${separator}autoplay=1&rel=0&modestbranding=1&playsinline=1` };
   }
 
   // Default iframe for existing embed URLs
@@ -524,9 +550,9 @@ export default function Home() {
                   onClick={() => setPlayingInline("left")}
                   className="relative aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 shadow-xl cursor-pointer group/player border border-neutral-800/80"
                 >
-                  {leftVideo.thumbnail ? (
+                  {getVideoThumbnail(leftVideo.thumbnail, leftVideo.videoUrl) ? (
                     <img
-                      src={leftVideo.thumbnail}
+                      src={getVideoThumbnail(leftVideo.thumbnail, leftVideo.videoUrl)}
                       alt={leftVideo.title}
                       className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
                       onError={(e) => {
@@ -552,6 +578,9 @@ export default function Home() {
                   <div className="absolute top-3 left-3 flex items-center gap-2">
                     <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
                       <Monitor className="w-3 h-3 text-[#eaff00]" /> 16:9 Widescreen
+                    </span>
+                    <span className="bg-[#eaff00] text-black font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+                      4K UHD
                     </span>
                     <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
                       {leftVideo.category}
@@ -635,9 +664,9 @@ export default function Home() {
                   {/* Subtle phone speaker notch indicator */}
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
 
-                  {rightVideo.thumbnail ? (
+                  {getVideoThumbnail(rightVideo.thumbnail, rightVideo.videoUrl) ? (
                     <img
-                      src={rightVideo.thumbnail}
+                      src={getVideoThumbnail(rightVideo.thumbnail, rightVideo.videoUrl)}
                       alt={rightVideo.title}
                       className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
                       onError={(e) => {
@@ -748,9 +777,9 @@ export default function Home() {
                   {/* Subtle phone speaker notch indicator */}
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
 
-                  {row2LeftVideo.thumbnail ? (
+                  {getVideoThumbnail(row2LeftVideo.thumbnail, row2LeftVideo.videoUrl) ? (
                     <img
-                      src={row2LeftVideo.thumbnail}
+                      src={getVideoThumbnail(row2LeftVideo.thumbnail, row2LeftVideo.videoUrl)}
                       alt={row2LeftVideo.title}
                       className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
                       onError={(e) => {
@@ -852,9 +881,9 @@ export default function Home() {
                   onClick={() => setPlayingInline("row2-right")}
                   className="relative aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 shadow-xl cursor-pointer group/player border border-neutral-800/80"
                 >
-                  {row2RightVideo.thumbnail ? (
+                  {getVideoThumbnail(row2RightVideo.thumbnail, row2RightVideo.videoUrl) ? (
                     <img
-                      src={row2RightVideo.thumbnail}
+                      src={getVideoThumbnail(row2RightVideo.thumbnail, row2RightVideo.videoUrl)}
                       alt={row2RightVideo.title}
                       className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
                       onError={(e) => {
@@ -879,6 +908,9 @@ export default function Home() {
                   <div className="absolute top-3 left-3 flex items-center gap-2">
                     <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
                       <Monitor className="w-3 h-3 text-[#eaff00]" /> 16:9 Widescreen
+                    </span>
+                    <span className="bg-[#eaff00] text-black font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+                      4K UHD
                     </span>
                     <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
                       {row2RightVideo.category}

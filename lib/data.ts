@@ -69,13 +69,13 @@ export const servicesData: Service[] = [
 export const projectsData: VideoProject[] = [
   {
     id: "video-16-9",
-    title: "Cinematic Travel Commercial",
+    title: "YouTube Long Form Content",
     category: "Long Form",
     aspectRatio: "16:9",
-    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1200&auto=format&fit=crop&q=80",
-    videoUrl: "https://youtu.be/nXQVoJdDdBg?si=HCa2bYDwt1UkWwRF",
-    description: "Fast-paced sound design, speed ramps, and high-contrast color grading. Mastered in 4K DCI for commercial broadcast and high-impact web delivery.",
-    duration: "1:30",
+    thumbnail: "",
+    videoUrl: "https://youtu.be/429fbGhc_uI",
+    description: "Fast-paced motion graphics, sound design, and high-contrast color grading. Gone viral and received 1 Million views in 7 Days.",
+    duration: "1:08",
   },
   {
     id: "video-9-16",
