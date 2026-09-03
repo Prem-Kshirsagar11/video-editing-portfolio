@@ -186,22 +186,22 @@ export default function Home() {
       setLeftVideo(editForm);
       try {
         localStorage.setItem("portfolio_video_16_9", JSON.stringify(editForm));
-      } catch {}
+      } catch { }
     } else if (editingTarget === "right") {
       setRightVideo(editForm);
       try {
         localStorage.setItem("portfolio_video_9_16", JSON.stringify(editForm));
-      } catch {}
+      } catch { }
     } else if (editingTarget === "row2-left") {
       setRow2LeftVideo(editForm);
       try {
         localStorage.setItem("portfolio_video_row2_9_16", JSON.stringify(editForm));
-      } catch {}
+      } catch { }
     } else if (editingTarget === "row2-right") {
       setRow2RightVideo(editForm);
       try {
         localStorage.setItem("portfolio_video_row2_16_9", JSON.stringify(editForm));
-      } catch {}
+      } catch { }
     }
     setEditingTarget(null);
   };
@@ -211,22 +211,22 @@ export default function Home() {
       setLeftVideo(INITIAL_16_9_VIDEO);
       try {
         localStorage.removeItem("portfolio_video_16_9");
-      } catch {}
+      } catch { }
     } else if (editingTarget === "right") {
       setRightVideo(INITIAL_9_16_VIDEO);
       try {
         localStorage.removeItem("portfolio_video_9_16");
-      } catch {}
+      } catch { }
     } else if (editingTarget === "row2-left") {
       setRow2LeftVideo(INITIAL_ROW2_9_16_VIDEO);
       try {
         localStorage.removeItem("portfolio_video_row2_9_16");
-      } catch {}
+      } catch { }
     } else if (editingTarget === "row2-right") {
       setRow2RightVideo(INITIAL_ROW2_16_9_VIDEO);
       try {
         localStorage.removeItem("portfolio_video_row2_16_9");
-      } catch {}
+      } catch { }
     }
     setEditingTarget(null);
   };
@@ -274,11 +274,11 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 sm:pt-28 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-4xl mx-auto">
+      <section className="pt-20 sm:pt-22 pb-4 sm:pb-6 px-6 text-center flex flex-col items-center w-full max-w-5xl mx-auto">
         {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#121212]/90 border border-neutral-800/80 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
           <svg
-            className="w-4 h-4 text-[#ff4b72] shrink-0"
+            className="w-3.5 h-3.5 text-[#ff4b72] shrink-0"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -290,12 +290,12 @@ export default function Home() {
             <circle cx="5" cy="18.5" r="1.2" strokeWidth="2" />
             <path d="M19.5 2.5v4M17.5 4.5h4" strokeWidth="2" />
           </svg>
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.14em] text-neutral-200">
+          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-neutral-200">
             AVAILABLE FOR FREELANCE &amp; REMOTE WORK
           </span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-5 text-shimmer">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-5 text-shimmer whitespace-nowrap">
           Video Editing Portfolio
         </h1>
 
@@ -815,7 +815,7 @@ export default function Home() {
       <section id="pricing" className="relative w-full pt-12 md:pt-16 pb-20 md:pb-24 mt-4 md:mt-6 mb-12 md:mb-16 overflow-hidden">
         {/* Top Luminous Beam Divider */}
         <div className="absolute top-0 left-0 right-0 luminous-divider" />
-        
+
         {/* Top Soft Spotlight Accent */}
         <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-36 bg-[radial-gradient(ellipse_at_top,_rgba(234,255,0,0.18),transparent_70%)] blur-2xl" />
 
@@ -848,13 +848,13 @@ export default function Home() {
 
           {/* Pricing Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
-            {pricingData.map((tier) => {
+            {pricingData.map((tier, idx) => {
               const cardStyle =
                 tier.theme === "blue"
-                  ? "bg-[#0b274a] border border-blue-900 rounded-2xl p-7 md:p-8 relative flex flex-col justify-between"
+                  ? "bg-[#0b274a] border border-blue-900 hover:border-blue-500/60 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-blue-950/70"
                   : tier.theme === "red"
-                  ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 rounded-2xl p-7 md:p-8 flex flex-col justify-between"
-                  : "bg-[#111] border border-neutral-800 rounded-2xl p-7 md:p-8 flex flex-col justify-between";
+                    ? "bg-[#5c0a0a] border-2 border-dashed border-red-600 hover:border-red-500 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-red-950/70"
+                    : "bg-[#111] border border-neutral-800 hover:border-neutral-700 rounded-2xl p-7 md:p-8 relative overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-2xl hover:shadow-black/80";
 
               const descStyle =
                 tier.theme === "default"
@@ -867,8 +867,11 @@ export default function Home() {
                   : "space-y-3 text-xs text-neutral-200";
 
               return (
-                <div key={tier.id} className={cardStyle}>
-                  <div>
+                <div key={tier.id} className={`${cardStyle} pricing-card-${idx + 1}`}>
+                  {/* Shimmer Effect */}
+                  <div className="price-card-shimmer" />
+
+                  <div className="relative z-10">
                     <h3 className="text-lg font-bold uppercase tracking-wider text-white">
                       {tier.name}
                     </h3>
