@@ -1064,6 +1064,11 @@ export default function Home() {
                       ))}
                     </ul>
                   </div>
+
+                  {/* Negotiable Sticker */}
+                  <span className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 z-20 bg-black/90 backdrop-blur-md text-[#eaff00] font-extrabold text-[10px] sm:text-[11px] uppercase tracking-wider px-3 py-1 rounded-lg border border-neutral-800 shadow-md">
+                    NEGOTIABLE
+                  </span>
                 </div>
               );
             })}
