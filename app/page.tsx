@@ -1339,8 +1339,8 @@ export default function Home() {
         >
           <div className="relative shrink-0">
             <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80"
-              alt="Avatar"
+              src={heroBadgeData.imageUrl || "/images/avatar.png"}
+              alt="Prem Kshirsagar"
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
             />
             <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-green-500 border-2 border-white rounded-full" />
