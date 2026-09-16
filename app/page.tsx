@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Check,
   Menu,
+  Phone,
 } from "lucide-react";
 
 import { VideoProject, servicesData, projectsData, pricingData, heroBadgeData } from "@/lib/data";
@@ -164,29 +165,10 @@ const FAQS = [
   },
 ];
 
-function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function YoutubeIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-      <polygon points="10 15 15 12 10 9 10 15" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-function TwitterIcon({ className = "w-4 h-4" }: { className?: string }) {
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.711 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
   );
 }
@@ -317,9 +299,9 @@ export default function Home() {
       <nav className="fixed top-4 sm:top-6 left-0 right-0 mx-auto w-[92%] sm:w-[90%] max-w-4xl h-14 z-40 rounded-2xl bg-neutral-950/85 backdrop-blur-md border border-neutral-800 px-4 sm:px-6 md:px-8 shadow-2xl flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex-1 flex items-center justify-start">
-          <a href="#" className="text-sm md:text-base tracking-tight flex items-center gap-2 font-bold text-white">
+          <a href="#" className="text-sm md:text-base tracking-tight flex items-center gap-2 font-semibold text-white">
             <Film className="w-4 h-4 text-[#eaff00]" />
-            <span>YOUR NAME</span>
+            <span>PREM KSHIRSAGAR</span>
           </a>
         </div>
 
@@ -1064,9 +1046,12 @@ export default function Home() {
                     <p className={descStyle}>
                       {tier.description}
                     </p>
-                    <button className="w-full bg-[#eaff00] text-black font-bold py-3 px-4 rounded-xl hover:bg-[#d8ec00] transition-colors mb-6 shadow-sm">
+                    <a
+                      href="mailto:premkshirsagar.editor@gmail.com"
+                      className="w-full block text-center bg-[#eaff00] text-black font-bold py-3 px-4 rounded-xl hover:bg-[#d8ec00] transition-colors mb-6 shadow-sm"
+                    >
                       {tier.buttonText}
-                    </button>
+                    </a>
                     <div className="text-xs text-neutral-500 mb-3.5 font-semibold uppercase tracking-wider">
                       {"WHAT'S INCLUDED:"}
                     </div>
@@ -1283,7 +1268,7 @@ export default function Home() {
               <div className="w-7 h-7 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
                 <Film className="w-3.5 h-3.5 text-[#eaff00]" />
               </div>
-              <span className="font-bold text-white text-base">YOUR NAME</span>
+              <span className="font-semibold text-white text-base">PREM KSHIRSAGAR</span>
             </div>
 
             <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
@@ -1292,38 +1277,29 @@ export default function Home() {
 
             <div className="text-xs sm:text-sm">
               <span className="text-neutral-500">Get in Touch: </span>
-              <a href="mailto:your-email@example.com" className="text-neutral-200 hover:text-[#eaff00] transition-colors font-medium">
-                your-email@example.com
+              <a href="mailto:premkshirsagar.editor@gmail.com" className="text-neutral-200 hover:text-[#eaff00] transition-colors font-medium">
+                premkshirsagar.editor@gmail.com
               </a>
             </div>
 
-            <div className="flex items-center gap-2 pt-0.5">
+            <div className="flex flex-wrap items-center gap-2 pt-0.5">
               <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+                href="tel:+918766423802"
+                aria-label="Call +91 8766423802"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-300 hover:text-[#eaff00] transition-colors text-xs font-medium"
               >
-                <InstagramIcon className="w-4 h-4" />
+                <Phone className="w-3.5 h-3.5 text-[#eaff00]" />
+                <span>+91 8766423802</span>
               </a>
               <a
-                href="https://youtube.com"
+                href="https://wa.me/918766423802"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
+                aria-label="WhatsApp"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-300 hover:text-[#25D366] transition-colors text-xs font-medium"
               >
-                <YoutubeIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-                className="p-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-400 hover:text-[#eaff00] transition-colors"
-              >
-                <TwitterIcon className="w-4 h-4" />
+                <WhatsAppIcon className="w-3.5 h-3.5 text-[#25D366]" />
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -1354,7 +1330,7 @@ export default function Home() {
 
         {/* Floating Message Widget */}
         <a
-          href="mailto:your-email@example.com"
+          href="mailto:premkshirsagar.editor@gmail.com"
           onClick={() => {
             document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
           }}
@@ -1370,7 +1346,7 @@ export default function Home() {
             <div className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="text-xs sm:text-sm font-bold truncate">Message Your Name</span>
+            <span className="text-xs sm:text-sm font-bold truncate">Message Prem Kshirsagar</span>
             <span className="text-[10px] sm:text-xs text-gray-500 font-medium truncate">Online • Avg. response time: 10 Minutes</span>
           </div>
         </a>
