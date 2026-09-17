@@ -11,6 +11,12 @@ export interface VideoProject {
   category: string;
   thumbnail: string;
   videoUrl: string; // YouTube, Shorts, Vimeo, or direct MP4/WebM URL
+  testimonialUrl?: string; // YouTube or video link to client testimonial / results
+  testimonialStats?: {
+    views?: string; // e.g. "1.2M" (auto-fetched from YouTube if omitted)
+    likes?: string; // e.g. "85K" (auto-fetched from YouTube if omitted)
+    comments?: string; // e.g. "3.4K" (auto-fetched from YouTube if omitted)
+  };
   description: string;
   aspectRatio: "16:9" | "9:16";
   duration?: string;
@@ -74,6 +80,10 @@ export const projectsData: VideoProject[] = [
     aspectRatio: "16:9",
     thumbnail: "",
     videoUrl: "https://youtu.be/429fbGhc_uI",
+    testimonialUrl: "https://youtu.be/Z6O9Qr9r7tQ?si=DhXjxWanfK-Gp-H9",
+    testimonialStats: {
+      comments: "1.2K+", // Verified public engagement
+    },
     description: "Fast-paced motion graphics, sound design, and high-contrast color grading. Gone viral and received 1 Million views in 7 Days.",
     duration: "1:08",
   },
@@ -99,12 +109,12 @@ export const projectsData: VideoProject[] = [
   },
   {
     id: "video-row2-16-9",
-    title: "Documentary Brand Story",
+    title: "Cinematic Trailer Editing",
     category: "Commercial / Doc",
     aspectRatio: "16:9",
-    thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1200&auto=format&fit=crop&q=80",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-    description: "Narrative-driven pacing, color grading calibrated for cinematic mood, and multi-track audio soundscapes tailored for high impact.",
+    thumbnail: "",
+    videoUrl: "https://youtu.be/c4EcnOGQSno",
+    description: "Designed to build hype for an upcoming course, this trailer combines narrative-driven pacing, cinematic color grading, and layered sound design for maximum impact.",
     duration: "2:15",
   },
 ];

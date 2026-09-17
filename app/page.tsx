@@ -7,14 +7,15 @@ import {
   Film,
   Scissors,
   Plus,
-  Minus,
-  Edit3,
   Monitor,
   Smartphone,
-  RotateCcw,
-  Check,
   Menu,
   Phone,
+  MessageSquareQuote,
+  Eye,
+  ThumbsUp,
+  MessageCircle,
+  ExternalLink,
 } from "lucide-react";
 
 import { VideoProject, servicesData, projectsData, pricingData, heroBadgeData } from "@/lib/data";
@@ -173,6 +174,239 @@ function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+function DurationBadge({ videoUrl, fallbackDuration }: { videoUrl?: string; fallbackDuration?: string }) {
+  const [duration, setDuration] = useState<string | null>(fallbackDuration || null);
+
+  useEffect(() => {
+    if (fallbackDuration) {
+      setDuration(fallbackDuration);
+    }
+
+    if (!videoUrl) return;
+
+    const ytId = extractYoutubeId(videoUrl);
+    if (ytId) {
+      fetch(`/api/video-duration?id=${encodeURIComponent(ytId)}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Duration fetch failed");
+          return res.json();
+        })
+        .then((data) => {
+          if (data && data.duration) {
+            setDuration(data.duration);
+          }
+        })
+        .catch(() => {
+          // Keep fallback if available
+        });
+    } else if (
+      videoUrl.endsWith(".mp4") ||
+      videoUrl.endsWith(".webm") ||
+      videoUrl.endsWith(".ogg") ||
+      videoUrl.includes("/videos/")
+    ) {
+      const tempVideo = document.createElement("video");
+      tempVideo.src = videoUrl;
+      tempVideo.preload = "metadata";
+      tempVideo.onloadedmetadata = () => {
+        if (tempVideo.duration && !isNaN(tempVideo.duration) && tempVideo.duration !== Infinity) {
+          const totalSecs = Math.round(tempVideo.duration);
+          const hours = Math.floor(totalSecs / 3600);
+          const minutes = Math.floor((totalSecs % 3600) / 60);
+          const seconds = totalSecs % 60;
+          const formattedSeconds = seconds.toString().padStart(2, "0");
+          if (hours > 0) {
+            setDuration(`${hours}:${minutes.toString().padStart(2, "0")}:${formattedSeconds}`);
+          } else {
+            setDuration(`${minutes}:${formattedSeconds}`);
+          }
+        }
+      };
+    }
+  }, [videoUrl, fallbackDuration]);
+
+  if (!duration) return null;
+
+  return (
+    <span className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-neutral-300 font-mono text-[11px] px-2 py-0.5 rounded border border-neutral-800">
+      {duration}
+    </span>
+  );
+}
+
+function formatStatNumber(num: number | string | undefined | null): string {
+  if (num === undefined || num === null || num === "") return "";
+  if (typeof num === "string") {
+    const cleanStr = num.replace(/likes?/i, "").replace(/views?/i, "").replace(/comments?/i, "").trim();
+    if (isNaN(Number(cleanStr.replace(/,/g, "")))) return cleanStr;
+    num = Number(cleanStr.replace(/,/g, ""));
+  }
+  if (isNaN(num)) return "";
+  if (num >= 1_000_000_000) {
+    return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+  }
+  if (num >= 1_000_000) {
+    return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+  }
+  if (num >= 1_000) {
+    return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  }
+  return num.toLocaleString();
+}
+
+function TestimonialModal({
+  testimonial,
+  onClose,
+}: {
+  testimonial: {
+    url: string;
+    title: string;
+    stats?: { views?: string; likes?: string; comments?: string };
+  };
+  onClose: () => void;
+}) {
+  const [stats, setStats] = useState<{
+    views?: string;
+    likes?: string;
+    comments?: string;
+  }>(testimonial.stats || {});
+  const [loadingStats, setLoadingStats] = useState(false);
+
+  useEffect(() => {
+    if (!testimonial.url) return;
+
+    const ytId = extractYoutubeId(testimonial.url);
+    if (ytId) {
+      setLoadingStats(true);
+      fetch(`/api/video-stats?id=${encodeURIComponent(ytId)}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Stats fetch failed");
+          return res.json();
+        })
+        .then((data) => {
+          if (data && data.stats) {
+            setStats((prev) => ({
+              views: (data.stats.views !== undefined ? formatStatNumber(data.stats.views) : undefined) || prev.views,
+              likes: (data.stats.likes !== undefined ? formatStatNumber(data.stats.likes) : undefined) || prev.likes,
+              comments: (data.stats.comments !== undefined ? formatStatNumber(data.stats.comments) : undefined) || prev.comments,
+            }));
+          }
+        })
+        .catch(() => {
+          // Keep existing stats if fetch fails
+        })
+        .finally(() => {
+          setLoadingStats(false);
+        });
+    }
+  }, [testimonial.url]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl bg-neutral-950 border border-neutral-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-[#eaff00]/10 border border-[#eaff00]/30 flex items-center justify-center">
+              <MessageSquareQuote className="w-4 h-4 text-[#eaff00]" />
+            </div>
+            <div>
+              <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                Client Testimonial &amp; Results
+              </h4>
+              <p className="text-[11px] sm:text-xs text-neutral-400">
+                {testimonial.title}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors border border-neutral-800 cursor-pointer"
+            aria-label="Close testimonial"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Video Embed Player */}
+        <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-neutral-800/80 shadow-inner">
+          {(() => {
+            const formatted = formatVideoUrl(testimonial.url, true);
+            if (formatted.type === "video") {
+              return (
+                <video
+                  src={formatted.src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+              );
+            }
+            return (
+              <iframe
+                className="w-full h-full"
+                src={formatted.src}
+                title="Client Testimonial"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            );
+          })()}
+        </div>
+
+        {/* Performance & Engagement Metrics Bar */}
+        <div className="mt-4 pt-4 border-t border-neutral-800/80 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            {/* Views Badge */}
+            {(stats.views || loadingStats) && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-semibold text-neutral-200">
+                <Eye className="w-3.5 h-3.5 text-[#eaff00]" />
+                <span>{stats.views ? `${stats.views} Views` : "Loading views..."}</span>
+              </div>
+            )}
+
+            {/* Likes Badge */}
+            {(stats.likes || loadingStats) && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-semibold text-neutral-200">
+                <ThumbsUp className="w-3.5 h-3.5 text-[#eaff00]" />
+                <span>{stats.likes ? `${stats.likes} Likes` : "Loading likes..."}</span>
+              </div>
+            )}
+
+            {/* Comments Badge */}
+            {stats.comments && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-semibold text-neutral-200">
+                <MessageCircle className="w-3.5 h-3.5 text-[#eaff00]" />
+                <span>{`${stats.comments} Comments`}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Direct Public Link to YouTube */}
+          {testimonial.url && (
+            <a
+              href={testimonial.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-400 hover:text-[#eaff00] transition-colors group/yt"
+            >
+              <span>Verify on YouTube</span>
+              <ExternalLink className="w-3 h-3 group-hover/yt:translate-x-0.5 group-hover/yt:-translate-y-0.5 transition-transform" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const contactRef = useRef<HTMLDivElement>(null);
   const [isDocked, setIsDocked] = useState(false);
@@ -189,20 +423,23 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Left 16:9 Video & Right 9:16 Video State (Row 1)
-  const [leftVideo, setLeftVideo] = useState<VideoProject>(projectsData[0] || INITIAL_16_9_VIDEO);
-  const [rightVideo, setRightVideo] = useState<VideoProject>(projectsData[1] || INITIAL_9_16_VIDEO);
+  // Left 16:9 Video & Right 9:16 Video (Row 1)
+  const leftVideo = projectsData[0] || INITIAL_16_9_VIDEO;
+  const rightVideo = projectsData[1] || INITIAL_9_16_VIDEO;
 
-  // Row 2: Left 9:16 Video & Right 16:9 Video State
-  const [row2LeftVideo, setRow2LeftVideo] = useState<VideoProject>(projectsData[2] || INITIAL_ROW2_9_16_VIDEO);
-  const [row2RightVideo, setRow2RightVideo] = useState<VideoProject>(projectsData[3] || INITIAL_ROW2_16_9_VIDEO);
+  // Row 2: Left 9:16 Video & Right 16:9 Video
+  const row2LeftVideo = projectsData[2] || INITIAL_ROW2_9_16_VIDEO;
+  const row2RightVideo = projectsData[3] || INITIAL_ROW2_16_9_VIDEO;
 
   // Currently playing inline video preview ('left' | 'right' | 'row2-left' | 'row2-right' | null)
   const [playingInline, setPlayingInline] = useState<string | null>(null);
 
-  // Quick edit modal state
-  const [editingTarget, setEditingTarget] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<VideoProject>(projectsData[0] || INITIAL_16_9_VIDEO);
+  // Testimonial modal state
+  const [activeTestimonial, setActiveTestimonial] = useState<{
+    url: string;
+    title: string;
+    stats?: { views?: string; likes?: string; comments?: string };
+  } | null>(null);
 
   // FAQ state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -210,82 +447,30 @@ export default function Home() {
   // Mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Load custom values from localStorage if user saved edits
+  // Close testimonial modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveTestimonial(null);
+      }
+    };
+    if (activeTestimonial) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeTestimonial]);
+
+  // Clear any legacy localStorage keys to ensure data.ts is always the single source of truth
   useEffect(() => {
     try {
-      const savedLeft = localStorage.getItem("portfolio_video_16_9");
-      if (savedLeft) setLeftVideo(JSON.parse(savedLeft));
-
-      const savedRight = localStorage.getItem("portfolio_video_9_16");
-      if (savedRight) setRightVideo(JSON.parse(savedRight));
-
-      const savedRow2Left = localStorage.getItem("portfolio_video_row2_9_16");
-      if (savedRow2Left) setRow2LeftVideo(JSON.parse(savedRow2Left));
-
-      const savedRow2Right = localStorage.getItem("portfolio_video_row2_16_9");
-      if (savedRow2Right) setRow2RightVideo(JSON.parse(savedRow2Right));
+      localStorage.removeItem("portfolio_video_16_9");
+      localStorage.removeItem("portfolio_video_9_16");
+      localStorage.removeItem("portfolio_video_row2_9_16");
+      localStorage.removeItem("portfolio_video_row2_16_9");
     } catch {
-      // LocalStorage not available or parse error
+      // LocalStorage not available or blocked
     }
   }, []);
-
-  const openEditor = (target: string) => {
-    setEditingTarget(target);
-    if (target === "left") setEditForm(leftVideo);
-    else if (target === "right") setEditForm(rightVideo);
-    else if (target === "row2-left") setEditForm(row2LeftVideo);
-    else if (target === "row2-right") setEditForm(row2RightVideo);
-  };
-
-  const saveEditor = () => {
-    if (editingTarget === "left") {
-      setLeftVideo(editForm);
-      try {
-        localStorage.setItem("portfolio_video_16_9", JSON.stringify(editForm));
-      } catch { }
-    } else if (editingTarget === "right") {
-      setRightVideo(editForm);
-      try {
-        localStorage.setItem("portfolio_video_9_16", JSON.stringify(editForm));
-      } catch { }
-    } else if (editingTarget === "row2-left") {
-      setRow2LeftVideo(editForm);
-      try {
-        localStorage.setItem("portfolio_video_row2_9_16", JSON.stringify(editForm));
-      } catch { }
-    } else if (editingTarget === "row2-right") {
-      setRow2RightVideo(editForm);
-      try {
-        localStorage.setItem("portfolio_video_row2_16_9", JSON.stringify(editForm));
-      } catch { }
-    }
-    setEditingTarget(null);
-  };
-
-  const resetToDefault = () => {
-    if (editingTarget === "left") {
-      setLeftVideo(INITIAL_16_9_VIDEO);
-      try {
-        localStorage.removeItem("portfolio_video_16_9");
-      } catch { }
-    } else if (editingTarget === "right") {
-      setRightVideo(INITIAL_9_16_VIDEO);
-      try {
-        localStorage.removeItem("portfolio_video_9_16");
-      } catch { }
-    } else if (editingTarget === "row2-left") {
-      setRow2LeftVideo(INITIAL_ROW2_9_16_VIDEO);
-      try {
-        localStorage.removeItem("portfolio_video_row2_9_16");
-      } catch { }
-    } else if (editingTarget === "row2-right") {
-      setRow2RightVideo(INITIAL_ROW2_16_9_VIDEO);
-      try {
-        localStorage.removeItem("portfolio_video_row2_16_9");
-      } catch { }
-    }
-    setEditingTarget(null);
-  };
 
   return (
     <div className="relative min-h-screen bg-transparent text-neutral-100 selection:bg-[#eaff00] selection:text-black overflow-x-hidden">
@@ -570,19 +755,35 @@ export default function Home() {
                   </div>
 
                   {/* Bottom Duration Badge */}
-                  {leftVideo.duration && (
-                    <span className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-neutral-300 font-mono text-[11px] px-2 py-0.5 rounded border border-neutral-800">
-                      {leftVideo.duration}
-                    </span>
-                  )}
+                  <DurationBadge videoUrl={leftVideo.videoUrl} fallbackDuration={leftVideo.duration} />
                 </div>
               )}
 
               {/* 16:9 Details */}
               <div className="pt-5 pb-1">
-                <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                  {leftVideo.title}
-                </h3>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
+                    {leftVideo.title}
+                  </h3>
+                  {leftVideo.testimonialUrl && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTestimonial({
+                          url: leftVideo.testimonialUrl!,
+                          title: leftVideo.title,
+                          stats: leftVideo.testimonialStats,
+                        });
+                      }}
+                      className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
+                      title="Watch client testimonial & results"
+                    >
+                      <div className="testimonial-btn-shimmer" />
+                      <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
+                      <span className="relative z-10">Testimonial</span>
+                    </button>
+                  )}
+                </div>
                 <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {leftVideo.description}
                 </p>
@@ -680,11 +881,7 @@ export default function Home() {
                   </div>
 
                   {/* Bottom Duration Badge */}
-                  {rightVideo.duration && (
-                    <span className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-neutral-300 font-mono text-[11px] px-2 py-0.5 rounded border border-neutral-800">
-                      {rightVideo.duration}
-                    </span>
-                  )}
+                  <DurationBadge videoUrl={rightVideo.videoUrl} fallbackDuration={rightVideo.duration} />
                 </div>
               )}
 
@@ -793,11 +990,7 @@ export default function Home() {
                   </div>
 
                   {/* Bottom Duration Badge */}
-                  {row2LeftVideo.duration && (
-                    <span className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-neutral-300 font-mono text-[11px] px-2 py-0.5 rounded border border-neutral-800">
-                      {row2LeftVideo.duration}
-                    </span>
-                  )}
+                  <DurationBadge videoUrl={row2LeftVideo.videoUrl} fallbackDuration={row2LeftVideo.duration} />
                 </div>
               )}
 
@@ -900,19 +1093,35 @@ export default function Home() {
                   </div>
 
                   {/* Bottom Duration Badge */}
-                  {row2RightVideo.duration && (
-                    <span className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-neutral-300 font-mono text-[11px] px-2 py-0.5 rounded border border-neutral-800">
-                      {row2RightVideo.duration}
-                    </span>
-                  )}
+                  <DurationBadge videoUrl={row2RightVideo.videoUrl} fallbackDuration={row2RightVideo.duration} />
                 </div>
               )}
 
               {/* 16:9 Details */}
               <div className="pt-5 pb-1">
-                <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                  {row2RightVideo.title}
-                </h3>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
+                    {row2RightVideo.title}
+                  </h3>
+                  {row2RightVideo.testimonialUrl && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTestimonial({
+                          url: row2RightVideo.testimonialUrl!,
+                          title: row2RightVideo.title,
+                          stats: row2RightVideo.testimonialStats,
+                        });
+                      }}
+                      className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
+                      title="Watch client testimonial & results"
+                    >
+                      <div className="testimonial-btn-shimmer" />
+                      <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
+                      <span className="relative z-10">Testimonial</span>
+                    </button>
+                  )}
+                </div>
                 <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
                   {row2RightVideo.description}
                 </p>
@@ -1079,137 +1288,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 luminous-divider" />
       </section>
 
-      {/* Interactive Quick Edit / Add Video Modal */}
-      {editingTarget && (
-        <div
-          onClick={() => setEditingTarget(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto bg-[#141414] border border-neutral-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl"
-          >
-            <div className="flex items-center justify-between pb-4 border-b border-neutral-800 mb-6">
-              <div className="flex items-center gap-2.5">
-                {editingTarget === "left" || editingTarget === "row2-right" ? (
-                  <Monitor className="w-5 h-5 text-[#eaff00]" />
-                ) : (
-                  <Smartphone className="w-5 h-5 text-[#eaff00]" />
-                )}
-                <h3 className="text-lg font-bold text-white tracking-tight">
-                  {editingTarget === "left" && "Edit 16:9 Video (Top Left)"}
-                  {editingTarget === "right" && "Edit 9:16 Video (Top Right)"}
-                  {editingTarget === "row2-left" && "Edit 9:16 Video (Bottom Left)"}
-                  {editingTarget === "row2-right" && "Edit 16:9 Video (Bottom Right)"}
-                </h3>
-              </div>
-              <button
-                onClick={() => setEditingTarget(null)}
-                className="text-neutral-400 hover:text-white p-1 rounded-md"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
-            <div className="flex flex-col gap-4 text-xs">
-              <div>
-                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
-                  Video Title
-                </label>
-                <input
-                  type="text"
-                  value={editForm.title}
-                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
-                  placeholder="e.g., Cinematic Travel Commercial"
-                />
-              </div>
-
-              <div>
-                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
-                  Category / Tag
-                </label>
-                <input
-                  type="text"
-                  value={editForm.category}
-                  onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors"
-                  placeholder="e.g., Commercial, YouTube, Reels"
-                />
-              </div>
-
-              <div>
-                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
-                  Video URL (YouTube, Shorts, Vimeo, or .mp4)
-                </label>
-                <input
-                  type="text"
-                  value={editForm.videoUrl}
-                  onChange={(e) => setEditForm({ ...editForm, videoUrl: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
-                  placeholder="e.g. https://www.youtube.com/watch?v=... or .mp4 URL"
-                />
-                <span className="text-[10px] text-neutral-500 mt-1.5 block">
-                  Accepts regular YouTube links, YouTube Shorts, Vimeo, or direct MP4/WebM video files.
-                </span>
-              </div>
-
-              <div>
-                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
-                  Thumbnail / Poster Image URL (Optional)
-                </label>
-                <input
-                  type="text"
-                  value={editForm.thumbnail}
-                  onChange={(e) => setEditForm({ ...editForm, thumbnail: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors font-mono text-[11px]"
-                  placeholder="https://images.unsplash.com/..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-neutral-300 font-semibold mb-1.5 uppercase tracking-wider text-[11px]">
-                  Description
-                </label>
-                <textarea
-                  rows={3}
-                  value={editForm.description}
-                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-[#eaff00] transition-colors leading-relaxed"
-                  placeholder="Describe the editing techniques, pacing, sound design..."
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-5 mt-5 border-t border-neutral-800">
-              <button
-                type="button"
-                onClick={resetToDefault}
-                className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-white transition-colors"
-              >
-                <RotateCcw className="w-3.5 h-3.5" /> Reset Default
-              </button>
-
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setEditingTarget(null)}
-                  className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 rounded-xl text-xs font-semibold transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={saveEditor}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#eaff00] hover:bg-[#d8ec00] text-black rounded-xl text-xs font-bold transition-all shadow-md"
-                >
-                  <Check className="w-3.5 h-3.5" /> Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* FAQ Section */}
       <section id="faq" className="pt-6 md:pt-10 pb-16 md:pb-20 px-4 sm:px-6 max-w-6xl mx-auto w-full">
@@ -1355,6 +1434,14 @@ export default function Home() {
             <span className="text-[10px] sm:text-xs text-gray-500 font-medium truncate">Online • Avg. response time: 10 Minutes</span>
           </div>
         </a>
+
+        {/* Testimonial Video Modal with Live Stats */}
+        {activeTestimonial && (
+          <TestimonialModal
+            testimonial={activeTestimonial}
+            onClose={() => setActiveTestimonial(null)}
+          />
+        )}
       </div>
     </div>
   );
