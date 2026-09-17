@@ -81,9 +81,6 @@ export const projectsData: VideoProject[] = [
     thumbnail: "",
     videoUrl: "https://youtu.be/429fbGhc_uI",
     testimonialUrl: "https://youtu.be/Z6O9Qr9r7tQ?si=DhXjxWanfK-Gp-H9",
-    testimonialStats: {
-      comments: "1.2K+", // Verified public engagement
-    },
     description: "Fast-paced motion graphics, sound design, and high-contrast color grading. Gone viral and received 1 Million views in 7 Days.",
     duration: "1:08",
   },
