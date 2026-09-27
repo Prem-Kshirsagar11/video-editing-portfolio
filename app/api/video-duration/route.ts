@@ -13,21 +13,16 @@ function extractYoutubeId(url: string): string | null {
 }
 
 function parseISO8601Duration(durationStr: string): string | null {
-  const match = durationStr.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/i);
-  if (!match) return null;
+  const match = durationStr.match(/P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/i);
+  if (!match || (!match[1] && !match[2] && !match[3] && !match[4])) return null;
 
-  const hours = parseInt(match[1] || "0", 10);
-  const minutes = parseInt(match[2] || "0", 10);
-  const seconds = parseInt(match[3] || "0", 10);
+  const days = parseInt(match[1] || "0", 10);
+  const hours = parseInt(match[2] || "0", 10) + days * 24;
+  const minutes = parseInt(match[3] || "0", 10);
+  const seconds = parseInt(match[4] || "0", 10);
 
-  const formattedSeconds = seconds.toString().padStart(2, "0");
-
-  if (hours > 0) {
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    return `${hours}:${formattedMinutes}:${formattedSeconds}`;
-  } else {
-    return `${minutes}:${formattedSeconds}`;
-  }
+  const totalSecs = hours * 3600 + minutes * 60 + seconds;
+  return formatSeconds(totalSecs);
 }
 
 function formatSeconds(totalSecs: number): string {

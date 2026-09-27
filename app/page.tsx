@@ -462,7 +462,14 @@ export default function Home() {
   const row2LeftVideo = projectsData[2] || INITIAL_ROW2_9_16_VIDEO;
   const row2RightVideo = projectsData[3] || INITIAL_ROW2_16_9_VIDEO;
 
-  // Currently playing inline video preview ('left' | 'right' | 'row2-left' | 'row2-right' | null)
+  // Categorized video lists (16:9 Landscape & 9:16 Vertical)
+  const landscapeVideos = projectsData.filter((p) => p.aspectRatio === "16:9");
+  const verticalVideos = projectsData.filter((p) => p.aspectRatio === "9:16");
+
+  // Selected format filter for See My Services ('all' | '16:9' | '9:16')
+  const [selectedFormat, setSelectedFormat] = useState<"all" | "16:9" | "9:16">("all");
+
+  // Currently playing inline video preview (video ID or string identifier | null)
   const [playingInline, setPlayingInline] = useState<string | null>(null);
 
   // Currently playing real result video preview (result ID or null)
@@ -547,15 +554,9 @@ export default function Home() {
         <div className="flex-1 flex items-center justify-end gap-2.5">
           <a
             href="#contact"
-            className="group relative hidden sm:inline-flex items-center justify-center p-[3px] rounded-full transition-all duration-300 hover:scale-105"
+            className="hidden sm:inline-flex items-center justify-center px-4 md:px-5 py-1.5 bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(234,255,0,0.35)] hover:shadow-[0_0_20px_rgba(234,255,0,0.6)] hover:scale-105"
           >
-            {/* Outer Glow Halo & Border on Hover */}
-            <span className="absolute inset-0 rounded-full border border-transparent group-hover:border-[#eaff00]/50 group-hover:bg-[#eaff00]/10 group-hover:shadow-[0_0_20px_rgba(234,255,0,0.35)] transition-all duration-300 pointer-events-none" />
-
-            {/* Inner Button Pill */}
-            <span className="relative z-10 inline-flex items-center justify-center px-4 md:px-5 py-1.5 bg-[#eaff00] group-hover:bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 shadow-sm">
-              Connect with Me
-            </span>
+            Connect with Me
           </a>
 
           {/* Mobile Hamburger Button */}
@@ -611,12 +612,9 @@ export default function Home() {
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="group relative w-full text-center flex items-center justify-center p-[3px] rounded-xl transition-all duration-300"
+              className="w-full text-center inline-flex items-center justify-center py-2.5 px-4 bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-all duration-300 shadow-[0_0_12px_rgba(234,255,0,0.35)] hover:shadow-[0_0_20px_rgba(234,255,0,0.6)]"
             >
-              <span className="absolute inset-0 rounded-xl border border-transparent group-hover:border-[#eaff00]/50 group-hover:bg-[#eaff00]/10 group-hover:shadow-[0_0_20px_rgba(234,255,0,0.35)] transition-all duration-300 pointer-events-none" />
-              <span className="relative z-10 w-full text-center inline-flex items-center justify-center py-2.5 px-4 bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-all duration-300 shadow-sm">
-                Connect with Me
-              </span>
+              Connect with Me
             </a>
           </div>
         </div>
@@ -895,7 +893,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Work Grid: Dual Showcase (Left 16:9 + Right 9:16) */}
+      {/* Work Grid: Categorized Showcase (16:9 Landscape & 9:16 Vertical Separately) */}
       <section id="work" className="pt-6 sm:pt-8 pb-6 md:pb-8 px-4 sm:px-6 max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 gap-4">
           <div>
@@ -905,480 +903,362 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Category Filter Controls */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-[11px] sm:text-xs font-semibold">
-              <Monitor className="w-3.5 h-3.5 text-[#eaff00]" /> 16:9 Landscape
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#111111] border border-neutral-800 text-neutral-300 text-[11px] sm:text-xs font-semibold">
-              <Smartphone className="w-3.5 h-3.5 text-[#eaff00]" /> 9:16 Vertical
-            </span>
+            <button
+              onClick={() => setSelectedFormat("all")}
+              className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedFormat === "all"
+                  ? "bg-[#eaff00] text-black shadow-[0_0_15px_rgba(234,255,0,0.35)] scale-105"
+                  : "bg-[#111111] border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-700"
+              }`}
+            >
+              All Formats
+            </button>
+            <button
+              onClick={() => setSelectedFormat("16:9")}
+              className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedFormat === "16:9"
+                  ? "bg-[#eaff00] text-black shadow-[0_0_15px_rgba(234,255,0,0.35)] scale-105"
+                  : "bg-[#111111] border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-700"
+              }`}
+            >
+              <Monitor className={`w-3.5 h-3.5 ${selectedFormat === "16:9" ? "text-black" : "text-[#eaff00]"}`} />
+              16:9 Landscape
+            </button>
+            <button
+              onClick={() => setSelectedFormat("9:16")}
+              className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                selectedFormat === "9:16"
+                  ? "bg-[#eaff00] text-black shadow-[0_0_15px_rgba(234,255,0,0.35)] scale-105"
+                  : "bg-[#111111] border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-700"
+              }`}
+            >
+              <Smartphone className={`w-3.5 h-3.5 ${selectedFormat === "9:16" ? "text-black" : "text-[#eaff00]"}`} />
+              9:16 Vertical
+            </button>
           </div>
         </div>
 
-        {/* Bento Grid: 16:9 on Left (8 cols), 9:16 on Right (4 cols) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
-          {/* ============================================================= */}
-          {/* LEFT SECTION: 16:9 Widescreen Video Showcase                  */}
-          {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              {/* 16:9 Video Container (Inline Preview) */}
-              {playingInline === "left" ? (
-                <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-xl border border-neutral-800/80">
-                  {(() => {
-                    const formatted = formatVideoUrl(leftVideo.videoUrl, true);
-                    if (formatted.type === "video") {
-                      return (
-                        <video
-                          src={formatted.src}
-                          controls
-                          autoPlay
-                          playsInline
-                          className="w-full h-full object-contain"
-                        />
-                      );
-                    }
-                    return (
-                      <iframe
-                        className="w-full h-full"
-                        src={formatted.src}
-                        title={leftVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  })()}
-
-                  {/* Close / Return to Preview button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlayingInline(null);
-                    }}
-                    className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
-                    title="Close preview"
-                    aria-label="Close preview"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+        {/* ============================================================= */}
+        {/* CATEGORY 1: 16:9 LANDSCAPE / LONG FORM SHOWCASE               */}
+        {/* ============================================================= */}
+        {(selectedFormat === "all" || selectedFormat === "16:9") && (
+          <div className="space-y-4 sm:space-y-6">
+            {/* Category Header Label */}
+            <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3 pt-2">
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-[#eaff00]/10 border border-[#eaff00]/30 text-[#eaff00]">
+                  <Monitor className="w-4 h-4" />
                 </div>
-              ) : (
-                <div
-                  onClick={() => setPlayingInline("left")}
-                  className="relative aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 shadow-xl cursor-pointer group/player border border-neutral-800/80"
-                >
-                  {getVideoThumbnail(leftVideo.thumbnail, leftVideo.videoUrl) ? (
-                    <img
-                      src={getVideoThumbnail(leftVideo.thumbnail, leftVideo.videoUrl)}
-                      alt={leftVideo.title}
-                      className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
-                      onError={(e) => {
-                        // Fallback gradient if thumbnail URL fails
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-950" />
-                  )}
-
-                  {/* Ambient vignette overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
-                      <Play className="w-6 h-6 ml-1 fill-black text-black" />
-                    </div>
-                  </div>
-
-                  {/* Top Badges */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      <Monitor className="w-3 h-3 text-[#eaff00]" /> 16:9 Widescreen
+                <div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    16:9 Landscape Videos
+                    <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-[#1c1d22] text-[#eaff00] border border-neutral-800">
+                      {landscapeVideos.length} Edits
                     </span>
-                    <span className="bg-[#eaff00] text-black font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
-                      4K UHD
-                    </span>
-                    <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      {leftVideo.category}
-                    </span>
-                  </div>
-
-                  {/* Bottom Duration Badge */}
-                  <DurationBadge videoUrl={leftVideo.videoUrl} fallbackDuration={leftVideo.duration} />
-                </div>
-              )}
-
-              {/* 16:9 Details */}
-              <div className="pt-5 pb-1">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                    {leftVideo.title}
                   </h3>
-                  {leftVideo.testimonialUrl && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTestimonial({
-                          url: leftVideo.testimonialUrl!,
-                          title: leftVideo.title,
-                          stats: leftVideo.testimonialStats,
-                        });
-                      }}
-                      className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
-                      title="Watch client testimonial & results"
-                    >
-                      <div className="testimonial-btn-shimmer" />
-                      <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
-                      <span className="relative z-10">Testimonial</span>
-                    </button>
-                  )}
                 </div>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
-                  {leftVideo.description}
-                </p>
               </div>
+              <span className="text-neutral-400 text-xs hidden sm:inline-block font-medium">
+                Widescreen Cinema • Long Form • Commercials
+              </span>
             </div>
-          </div>
 
-          {/* ============================================================= */}
-          {/* RIGHT SECTION: 9:16 Vertical Video Showcase                   */}
-          {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
-              {playingInline === "right" ? (
-                <div className="relative aspect-[9/16] w-full max-w-[215px] sm:max-w-[220px] mx-auto rounded-3xl overflow-hidden bg-black shadow-2xl border-2 border-neutral-800/90">
-                  {/* Subtle phone speaker notch indicator */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70 pointer-events-none" />
-
-                  {(() => {
-                    const formatted = formatVideoUrl(rightVideo.videoUrl, true);
-                    if (formatted.type === "video") {
-                      return (
-                        <video
-                          src={formatted.src}
-                          controls
-                          autoPlay
-                          playsInline
-                          className="w-full h-full object-contain"
-                        />
-                      );
-                    }
-                    return (
-                      <iframe
-                        className="w-full h-full"
-                        src={formatted.src}
-                        title={rightVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  })()}
-
-                  {/* Close / Return to Preview button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlayingInline(null);
-                    }}
-                    className="absolute top-4 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
-                    title="Close preview"
-                    aria-label="Close preview"
+            {/* 16:9 Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
+              {landscapeVideos.map((video) => {
+                const isPlaying = playingInline === video.id;
+                return (
+                  <div
+                    key={video.id}
+                    className="group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between"
                   >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  onClick={() => setPlayingInline("right")}
-                  className="relative aspect-[9/16] w-full max-w-[215px] sm:max-w-[220px] mx-auto rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl cursor-pointer group/player border-2 border-neutral-800/90"
-                >
-                  {/* Subtle phone speaker notch indicator */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
+                    <div>
+                      {/* 16:9 Video Container (Inline Preview) */}
+                      {isPlaying ? (
+                        <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-xl border border-neutral-800/80">
+                          {(() => {
+                            const formatted = formatVideoUrl(video.videoUrl, true);
+                            if (formatted.type === "video") {
+                              return (
+                                <video
+                                  src={formatted.src}
+                                  controls
+                                  autoPlay
+                                  playsInline
+                                  className="w-full h-full object-contain"
+                                />
+                              );
+                            }
+                            return (
+                              <iframe
+                                className="w-full h-full"
+                                src={formatted.src}
+                                title={video.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            );
+                          })()}
 
-                  {getVideoThumbnail(rightVideo.thumbnail, rightVideo.videoUrl) ? (
-                    <img
-                      src={getVideoThumbnail(rightVideo.thumbnail, rightVideo.videoUrl)}
-                      alt={rightVideo.title}
-                      className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-tr from-neutral-950 via-neutral-900 to-neutral-800" />
-                  )}
+                          {/* Close / Return to Preview button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPlayingInline(null);
+                            }}
+                            className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
+                            title="Close preview"
+                            aria-label="Close preview"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => setPlayingInline(video.id)}
+                          className="relative aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 shadow-xl cursor-pointer group/player border border-neutral-800/80"
+                        >
+                          {getVideoThumbnail(video.thumbnail, video.videoUrl) ? (
+                            <img
+                              src={getVideoThumbnail(video.thumbnail, video.videoUrl)}
+                              alt={video.title}
+                              className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
+                              onError={(e) => {
+                                // Fallback gradient if thumbnail URL fails
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-950" />
+                          )}
 
-                  {/* Ambient vignette overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
+                          {/* Ambient vignette overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
-                      <Play className="w-5 h-5 ml-0.5 fill-black text-black" />
+                          {/* Play Button Overlay */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
+                              <Play className="w-6 h-6 ml-1 fill-black text-black" />
+                            </div>
+                          </div>
+
+                          {/* Top Badges */}
+                          <div className="absolute top-3 left-3 flex items-center gap-2">
+                            <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
+                              <Monitor className="w-3 h-3 text-[#eaff00]" /> 16:9 Widescreen
+                            </span>
+                            <span className="bg-[#eaff00] text-black font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
+                              4K UHD
+                            </span>
+                            <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
+                              {video.category}
+                            </span>
+                          </div>
+
+                          {/* Bottom Duration Badge */}
+                          <DurationBadge videoUrl={video.videoUrl} fallbackDuration={video.duration} />
+                        </div>
+                      )}
+
+                      {/* 16:9 Details */}
+                      <div className="pt-5 pb-1">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
+                            {video.title}
+                          </h3>
+                          {video.testimonialUrl && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveTestimonial({
+                                  url: video.testimonialUrl!,
+                                  title: video.title,
+                                  stats: video.testimonialStats,
+                                });
+                              }}
+                              className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
+                              title="Watch client testimonial & results"
+                            >
+                              <div className="testimonial-btn-shimmer" />
+                              <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
+                              <span className="relative z-10">Testimonial</span>
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
+                          {video.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Top Badges */}
-                  <div className="absolute top-4 left-3 right-3 flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      <Smartphone className="w-3 h-3 text-[#eaff00]" /> 9:16
-                    </span>
-                    <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      {rightVideo.category}
-                    </span>
-                  </div>
-
-                  {/* Bottom Duration Badge */}
-                  <DurationBadge videoUrl={rightVideo.videoUrl} fallbackDuration={rightVideo.duration} />
-                </div>
-              )}
-
-              {/* 9:16 Details */}
-              <div className="pt-5 pb-1">
-                <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                  {rightVideo.title}
-                </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
-                  {rightVideo.description}
-                </p>
-              </div>
+                );
+              })}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Row 2: Alternating Bento Grid (Left 9:16 + Right 16:9) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch mt-6 md:mt-8">
-          {/* ============================================================= */}
-          {/* ROW 2 LEFT SECTION: 9:16 Vertical Video Showcase              */}
-          {/* ============================================================= */}
-          <div className="lg:col-span-4 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
-              {playingInline === "row2-left" ? (
-                <div className="relative aspect-[9/16] w-full max-w-[215px] sm:max-w-[220px] mx-auto rounded-3xl overflow-hidden bg-black shadow-2xl border-2 border-neutral-800/90">
-                  {/* Subtle phone speaker notch indicator */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70 pointer-events-none" />
-
-                  {(() => {
-                    const formatted = formatVideoUrl(row2LeftVideo.videoUrl, true);
-                    if (formatted.type === "video") {
-                      return (
-                        <video
-                          src={formatted.src}
-                          controls
-                          autoPlay
-                          playsInline
-                          className="w-full h-full object-contain"
-                        />
-                      );
-                    }
-                    return (
-                      <iframe
-                        className="w-full h-full"
-                        src={formatted.src}
-                        title={row2LeftVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  })()}
-
-                  {/* Close / Return to Preview button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlayingInline(null);
-                    }}
-                    className="absolute top-4 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
-                    title="Close preview"
-                    aria-label="Close preview"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+        {/* ============================================================= */}
+        {/* CATEGORY 2: 9:16 VERTICAL / SHORT FORM SHOWCASE               */}
+        {/* ============================================================= */}
+        {(selectedFormat === "all" || selectedFormat === "9:16") && (
+          <div className={`space-y-4 sm:space-y-6 ${selectedFormat === "all" ? "mt-10 sm:mt-14" : ""}`}>
+            {/* Category Header Label */}
+            <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3 pt-2">
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-[#eaff00]/10 border border-[#eaff00]/30 text-[#eaff00]">
+                  <Smartphone className="w-4 h-4" />
                 </div>
-              ) : (
-                <div
-                  onClick={() => setPlayingInline("row2-left")}
-                  className="relative aspect-[9/16] w-full max-w-[215px] sm:max-w-[220px] mx-auto rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl cursor-pointer group/player border-2 border-neutral-800/90"
-                >
-                  {/* Subtle phone speaker notch indicator */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
-
-                  {getVideoThumbnail(row2LeftVideo.thumbnail, row2LeftVideo.videoUrl) ? (
-                    <img
-                      src={getVideoThumbnail(row2LeftVideo.thumbnail, row2LeftVideo.videoUrl)}
-                      alt={row2LeftVideo.title}
-                      className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-tr from-neutral-950 via-neutral-900 to-neutral-800" />
-                  )}
-
-                  {/* Ambient vignette overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
-
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
-                      <Play className="w-5 h-5 ml-0.5 fill-black text-black" />
-                    </div>
-                  </div>
-
-                  {/* Top Badges */}
-                  <div className="absolute top-4 left-3 right-3 flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      <Smartphone className="w-3 h-3 text-[#eaff00]" /> 9:16
+                <div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    9:16 Vertical Videos
+                    <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-[#1c1d22] text-[#eaff00] border border-neutral-800">
+                      {verticalVideos.length} Edits
                     </span>
-                    <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      {row2LeftVideo.category}
-                    </span>
-                  </div>
-
-                  {/* Bottom Duration Badge */}
-                  <DurationBadge videoUrl={row2LeftVideo.videoUrl} fallbackDuration={row2LeftVideo.duration} />
-                </div>
-              )}
-
-              {/* 9:16 Details */}
-              <div className="pt-5 pb-1">
-                <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                  {row2LeftVideo.title}
-                </h3>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
-                  {row2LeftVideo.description}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* ============================================================= */}
-          {/* ROW 2 RIGHT SECTION: 16:9 Widescreen Video Showcase           */}
-          {/* ============================================================= */}
-          <div className="lg:col-span-8 group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              {/* 16:9 Video Container (Inline Preview) */}
-              {playingInline === "row2-right" ? (
-                <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-xl border border-neutral-800/80">
-                  {(() => {
-                    const formatted = formatVideoUrl(row2RightVideo.videoUrl, true);
-                    if (formatted.type === "video") {
-                      return (
-                        <video
-                          src={formatted.src}
-                          controls
-                          autoPlay
-                          playsInline
-                          className="w-full h-full object-contain"
-                        />
-                      );
-                    }
-                    return (
-                      <iframe
-                        className="w-full h-full"
-                        src={formatted.src}
-                        title={row2RightVideo.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  })()}
-
-                  {/* Close / Return to Preview button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlayingInline(null);
-                    }}
-                    className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
-                    title="Close preview"
-                    aria-label="Close preview"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  onClick={() => setPlayingInline("row2-right")}
-                  className="relative aspect-video w-full rounded-2xl overflow-hidden bg-neutral-900 shadow-xl cursor-pointer group/player border border-neutral-800/80"
-                >
-                  {getVideoThumbnail(row2RightVideo.thumbnail, row2RightVideo.videoUrl) ? (
-                    <img
-                      src={getVideoThumbnail(row2RightVideo.thumbnail, row2RightVideo.videoUrl)}
-                      alt={row2RightVideo.title}
-                      className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-tr from-neutral-900 via-neutral-800 to-neutral-950" />
-                  )}
-
-                  {/* Ambient vignette overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
-                      <Play className="w-6 h-6 ml-1 fill-black text-black" />
-                    </div>
-                  </div>
-
-                  {/* Top Badges */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      <Monitor className="w-3 h-3 text-[#eaff00]" /> 16:9 Widescreen
-                    </span>
-                    <span className="bg-[#eaff00] text-black font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
-                      4K UHD
-                    </span>
-                    <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
-                      {row2RightVideo.category}
-                    </span>
-                  </div>
-
-                  {/* Bottom Duration Badge */}
-                  <DurationBadge videoUrl={row2RightVideo.videoUrl} fallbackDuration={row2RightVideo.duration} />
-                </div>
-              )}
-
-              {/* 16:9 Details */}
-              <div className="pt-5 pb-1">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
-                    {row2RightVideo.title}
                   </h3>
-                  {row2RightVideo.testimonialUrl && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTestimonial({
-                          url: row2RightVideo.testimonialUrl!,
-                          title: row2RightVideo.title,
-                          stats: row2RightVideo.testimonialStats,
-                        });
-                      }}
-                      className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
-                      title="Watch client testimonial & results"
-                    >
-                      <div className="testimonial-btn-shimmer" />
-                      <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
-                      <span className="relative z-10">Testimonial</span>
-                    </button>
-                  )}
                 </div>
-                <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
-                  {row2RightVideo.description}
-                </p>
               </div>
+              <span className="text-neutral-400 text-xs hidden sm:inline-block font-medium">
+                High Retention • Reels, Shorts &amp; TikToks
+              </span>
+            </div>
+
+            {/* 9:16 Grid: 3 Videos in one row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+              {verticalVideos.map((video) => {
+                const isPlaying = playingInline === video.id;
+                return (
+                  <div
+                    key={video.id}
+                    className="group bg-[#111111] border border-neutral-800 hover:border-neutral-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* 9:16 Smartphone Mockup Container (Inline Preview) */}
+                      {isPlaying ? (
+                        <div className="relative aspect-[9/16] w-full max-w-[200px] sm:max-w-[215px] mx-auto rounded-3xl overflow-hidden bg-black shadow-2xl border-2 border-neutral-800/90">
+                          {/* Subtle phone speaker notch indicator */}
+                          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70 pointer-events-none" />
+
+                          {(() => {
+                            const formatted = formatVideoUrl(video.videoUrl, true);
+                            if (formatted.type === "video") {
+                              return (
+                                <video
+                                  src={formatted.src}
+                                  controls
+                                  autoPlay
+                                  playsInline
+                                  className="w-full h-full object-contain"
+                                />
+                              );
+                            }
+                            return (
+                              <iframe
+                                className="w-full h-full"
+                                src={formatted.src}
+                                title={video.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            );
+                          })()}
+
+                          {/* Close / Return to Preview button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPlayingInline(null);
+                            }}
+                            className="absolute top-4 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
+                            title="Close preview"
+                            aria-label="Close preview"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => setPlayingInline(video.id)}
+                          className="relative aspect-[9/16] w-full max-w-[200px] sm:max-w-[215px] mx-auto rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl cursor-pointer group/player border-2 border-neutral-800/90"
+                        >
+                          {/* Subtle phone speaker notch indicator */}
+                          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
+
+                          {getVideoThumbnail(video.thumbnail, video.videoUrl) ? (
+                            <img
+                              src={getVideoThumbnail(video.thumbnail, video.videoUrl)}
+                              alt={video.title}
+                              className="w-full h-full object-cover group-hover/player:scale-105 transition-transform duration-700"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-tr from-neutral-950 via-neutral-900 to-neutral-800" />
+                          )}
+
+                          {/* Ambient vignette overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
+
+                          {/* Play Button Overlay */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
+                              <Play className="w-5 h-5 ml-0.5 fill-black text-black" />
+                            </div>
+                          </div>
+
+                          {/* Top Badges */}
+                          <div className="absolute top-4 left-3 right-3 flex items-center justify-between">
+                            <span className="inline-flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
+                              <Smartphone className="w-3 h-3 text-[#eaff00]" /> 9:16
+                            </span>
+                            <span className="bg-black/80 backdrop-blur-md text-[#eaff00] font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-800">
+                              {video.category}
+                            </span>
+                          </div>
+
+                          {/* Bottom Duration Badge */}
+                          <DurationBadge videoUrl={video.videoUrl} fallbackDuration={video.duration} />
+                        </div>
+                      )}
+
+                      {/* 9:16 Details */}
+                      <div className="pt-5 pb-1">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#eaff00] transition-colors">
+                            {video.title}
+                          </h3>
+                          {video.testimonialUrl && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveTestimonial({
+                                  url: video.testimonialUrl!,
+                                  title: video.title,
+                                  stats: video.testimonialStats,
+                                });
+                              }}
+                              className="relative overflow-hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181a20] hover:bg-[#eaff00] text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-[#eaff00] font-semibold text-xs tracking-wide transition-all duration-200 shadow-sm cursor-pointer group/tbtn"
+                              title="Watch client testimonial & results"
+                            >
+                              <div className="testimonial-btn-shimmer" />
+                              <MessageSquareQuote className="w-3.5 h-3.5 text-[#eaff00] group-hover/tbtn:text-black transition-colors relative z-10" />
+                              <span className="relative z-10">Testimonial</span>
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-neutral-400 text-xs sm:text-[13px] mt-2 leading-relaxed font-normal">
+                          {video.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
+        )}
 
         {/* Workflow Section: Wide Bento Card below Projects */}
         <div id="about" className="mt-8 md:mt-10 bg-[#111111] border border-neutral-800 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8">
