@@ -22,6 +22,15 @@ export interface VideoProject {
   duration?: string;
 }
 
+export interface RealResultItem {
+  id: string;
+  title: string;
+  thumbnail?: string;
+  videoUrl: string;
+  views: string;
+  duration?: string;
+}
+
 export interface HeroBadgeConfig {
   imageUrl: string;
   text: string;
@@ -81,6 +90,9 @@ export const projectsData: VideoProject[] = [
     thumbnail: "",
     videoUrl: "https://youtu.be/429fbGhc_uI",
     testimonialUrl: "https://youtu.be/Z6O9Qr9r7tQ?si=DhXjxWanfK-Gp-H9",
+    testimonialStats: {
+      comments: "1.2K+", // Verified public engagement
+    },
     description: "Fast-paced motion graphics, sound design, and high-contrast color grading. Gone viral and received 1 Million views in 7 Days.",
     duration: "1:08",
   },
@@ -116,19 +128,41 @@ export const projectsData: VideoProject[] = [
   },
 ];
 
+// -------------------------------------------------------------
+// REAL-WORLD IMPACT / RESULTS DATA
+// These are the videos shown in the "Real-World Impact" section
+// with their view counts (auto-fetched from YouTube API when possible)
+// -------------------------------------------------------------
+export const realResultsData: RealResultItem[] = [
+  {
+    id: "real-result-1",
+    title: "Viral YouTube Edit",
+    thumbnail: "",
+    videoUrl: "https://youtu.be/Z6O9Qr9r7tQ?si=9NKXq_PpV5Mo4UQh",
+    views: "1M+ Views",
+  },
+  {
+    id: "real-result-2",
+    title: "High-Retention Gaming Edit",
+    thumbnail: "",
+    videoUrl: "https://youtu.be/AJymOyDD0bk?si=ZZhospxZ3l4H32FI",
+    views: "500K+ Views",
+  },
+];
+
 export const pricingData: PricingTier[] = [
   {
     id: "short-form-plan",
     name: "Short form content",
     originalPrice: "",
-    currentPrice: "₹1499",
+    currentPrice: "₹999",
     taxNote: "",
     description: "Perfect for creators starting out with consistent, clean short-form content.",
     buttonText: "Contact me",
     features: [
       "+ 3-day delivery",
       "+ 2 Revisions",
-      "+ Up to 15 minutes of footage provided",
+      "+ Up to 5 minutes of footage provided",
       "+ Up to 1 minute running time",
       "+ Sound design & mixing",
       "+ Motion graphics",
@@ -139,7 +173,7 @@ export const pricingData: PricingTier[] = [
     id: "long-form-plan",
     name: "long form content",
     originalPrice: "",
-    currentPrice: "₹2499",
+    currentPrice: "₹1499",
     taxNote: "",
     description: "Ideal for growing brands demanding dynamic pacing, sound design, and custom graphics.",
     buttonText: "Contact me",
@@ -147,11 +181,10 @@ export const pricingData: PricingTier[] = [
       "+ 5-day delivery",
       "+ 5 Revisions",
       "+ Up to 30 minutes of footage provided",
-      "+ Up to 5 minutes running time",
+      "+ Up to 10 minutes running time",
       "+ Subtitles",
       "+ Sound design & mixing",
       "+ Motion graphics",
-
     ],
     theme: "blue",
   },
@@ -166,8 +199,8 @@ export const pricingData: PricingTier[] = [
     features: [
       "+ 10-day delivery",
       "+ Unlimited Revisions",
-      "+ Up to 60 minutes of footage provided",
-      "+ Up to 10 minutes running time",
+      "+ Up to 120 minutes of footage provided",
+      "+ Up to 30 minutes running time",
       "+ Color grading",
       "+ Sound design & mixing",
       "+ Motion graphics",

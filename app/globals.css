@@ -204,3 +204,35 @@ body {
   animation: testimonial-shimmer-sweep 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   BOTTOM VIEWPORT GRADIENT BLUR (PURE PROGRESSIVE GLASS BLUR, NO VIGNETTE)
+   ========================================================================== */
+.bottom-gradient-blur {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 140px;
+  pointer-events: none;
+  z-index: 35;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.92) 25%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.18) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.92) 25%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.18) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}

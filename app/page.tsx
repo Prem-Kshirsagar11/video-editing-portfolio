@@ -18,9 +18,9 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-import { VideoProject, servicesData, projectsData, pricingData, heroBadgeData } from "@/lib/data";
+import { VideoProject, RealResultItem, servicesData, projectsData, realResultsData, pricingData, heroBadgeData } from "@/lib/data";
 
-export { type VideoProject };
+export { type VideoProject, type RealResultItem };
 
 export const INITIAL_16_9_VIDEO: VideoProject = projectsData[0];
 export const INITIAL_9_16_VIDEO: VideoProject = projectsData[1];
@@ -153,8 +153,8 @@ const FAQS = [
     answer: "Standard short-form content takes 2-3 days. Long-form YouTube or commercial projects typically take 1-2 weeks depending on complexity.",
   },
   {
-    question: "WHAT DO YOU NEED FROM ME TO GET STARTED?",
-    answer: "I need your raw footage, a project brief or script, any specific branding assets (logos, fonts), and a reference video if you have a specific style in mind.",
+    question: "HOW MUCH DO YOU CHARGE?",
+    answer: "My pricing depends on the scope and complexity of your project, every project is unique. To make things simple and transparent, I offer 30 minute one-on-one call where we discuss your vision, goals and the style you are looking for.",
   },
   {
     question: "DO YOU OFFER REVISIONS?",
@@ -162,14 +162,14 @@ const FAQS = [
   },
   {
     question: "WHAT EDITING SOFTWARE DO YOU USE?",
-    answer: "I primarily edit in Premiere Pro and DaVinci Resolve, utilizing After Effects for custom motion graphics and visual effects.",
+    answer: "I entirely edit in DaVinci Resolve, utilizing Audacity for Audio Enhancements and Photoshop for Thumbnail Designing.",
   },
 ];
 
 function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.711 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.711 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
   );
 }
@@ -232,6 +232,37 @@ function DurationBadge({ videoUrl, fallbackDuration }: { videoUrl?: string; fall
       {duration}
     </span>
   );
+}
+
+function RealResultViewCount({ videoUrl, fallbackViews }: { videoUrl: string; fallbackViews: string }) {
+  const [displayViews, setDisplayViews] = useState<string>(fallbackViews);
+
+  useEffect(() => {
+    if (!videoUrl) return;
+    const ytId = extractYoutubeId(videoUrl);
+    if (!ytId) return;
+
+    fetch(`/api/video-stats?id=${encodeURIComponent(ytId)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Stats fetch failed");
+        return res.json();
+      })
+      .then((data) => {
+        if (data?.stats?.views !== undefined) {
+          const raw = typeof data.stats.views === "string"
+            ? parseInt(data.stats.views.replace(/[^0-9]/g, ""), 10)
+            : data.stats.views;
+          if (!isNaN(raw) && raw > 0) {
+            setDisplayViews(formatStatNumber(raw) + "+ Views");
+          }
+        }
+      })
+      .catch(() => {
+        // Keep fallback views from data.ts
+      });
+  }, [videoUrl]);
+
+  return <>{displayViews}</>;
 }
 
 function formatStatNumber(num: number | string | undefined | null): string {
@@ -434,6 +465,9 @@ export default function Home() {
   // Currently playing inline video preview ('left' | 'right' | 'row2-left' | 'row2-right' | null)
   const [playingInline, setPlayingInline] = useState<string | null>(null);
 
+  // Currently playing real result video preview (result ID or null)
+  const [playingRealResult, setPlayingRealResult] = useState<string | null>(null);
+
   // Testimonial modal state
   const [activeTestimonial, setActiveTestimonial] = useState<{
     url: string;
@@ -492,6 +526,9 @@ export default function Home() {
 
         {/* Center: Navigation Links */}
         <div className="hidden md:flex items-center justify-center gap-6 md:gap-8 font-bold text-xs uppercase tracking-widest">
+          <a href="#results" className="text-neutral-400 hover:text-white transition-colors">
+            Results
+          </a>
           <a href="#work" className="text-neutral-400 hover:text-white transition-colors">
             Work
           </a>
@@ -510,9 +547,15 @@ export default function Home() {
         <div className="flex-1 flex items-center justify-end gap-2.5">
           <a
             href="#contact"
-            className="hidden sm:inline-flex py-1.5 px-4 md:px-5 bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-sm"
+            className="group relative hidden sm:inline-flex items-center justify-center p-[3px] rounded-full transition-all duration-300 hover:scale-105"
           >
-            Get in Touch
+            {/* Outer Glow Halo & Border on Hover */}
+            <span className="absolute inset-0 rounded-full border border-transparent group-hover:border-[#eaff00]/50 group-hover:bg-[#eaff00]/10 group-hover:shadow-[0_0_20px_rgba(234,255,0,0.35)] transition-all duration-300 pointer-events-none" />
+
+            {/* Inner Button Pill */}
+            <span className="relative z-10 inline-flex items-center justify-center px-4 md:px-5 py-1.5 bg-[#eaff00] group-hover:bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 shadow-sm">
+              Connect with Me
+            </span>
           </a>
 
           {/* Mobile Hamburger Button */}
@@ -529,6 +572,13 @@ export default function Home() {
       {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
         <div className="fixed top-20 left-0 right-0 mx-auto w-[92%] max-w-md z-40 rounded-2xl bg-neutral-950/95 backdrop-blur-xl border border-neutral-800 p-5 shadow-2xl flex flex-col gap-3 md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <a
+            href="#results"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
+          >
+            Results
+          </a>
           <a
             href="#work"
             onClick={() => setMobileMenuOpen(false)}
@@ -561,9 +611,12 @@ export default function Home() {
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center block py-2.5 px-4 bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-sm"
+              className="group relative w-full text-center flex items-center justify-center p-[3px] rounded-xl transition-all duration-300"
             >
-              Get in Touch
+              <span className="absolute inset-0 rounded-xl border border-transparent group-hover:border-[#eaff00]/50 group-hover:bg-[#eaff00]/10 group-hover:shadow-[0_0_20px_rgba(234,255,0,0.35)] transition-all duration-300 pointer-events-none" />
+              <span className="relative z-10 w-full text-center inline-flex items-center justify-center py-2.5 px-4 bg-[#eaff00] text-black font-bold text-xs uppercase tracking-widest rounded-lg transition-all duration-300 shadow-sm">
+                Connect with Me
+              </span>
             </a>
           </div>
         </div>
@@ -638,11 +691,208 @@ export default function Home() {
           Specialized in high-retention social content, cinematic commercials, and digital storytelling that captivates audiences.
         </p>
         <a
-          href="#work"
+          href="#results"
           className="bg-[#eaff00] hover:bg-[#d8ec00] text-black font-bold px-8 py-3.5 rounded-full inline-block transition-all shadow-lg shadow-[#eaff00]/10 hover:shadow-[#eaff00]/20 tracking-wide hover:scale-105 transform duration-200 -translate-y-6"
         >
           View My Work
         </a>
+      </section>
+
+      {/* Real-World Impact Section (Above See My Services) */}
+      <section id="results" className="relative w-full pt-12 sm:pt-16 pb-10 sm:pb-14 px-4 sm:px-6 overflow-hidden scroll-mt-20 sm:scroll-mt-24">
+        {/* Futuristic Glowing Horizon & Contoured Wings Background (Smooth Laser Aesthetic in #eaff00 Theme) */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none">
+          {/* Deep Dark Base Tint */}
+          <div className="absolute inset-0 bg-[#070707]" />
+
+          {/* Top Radial Spotlight Glow */}
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] md:w-[1100px] h-[300px] bg-[radial-gradient(ellipse_at_top,_rgba(234,255,0,0.18),transparent_70%)] blur-3xl opacity-80" />
+
+          {/* Top Arch Horizon Luminous Line (Bright Glowing Neon) */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[85%] max-w-4xl h-[1.5px] bg-gradient-to-r from-transparent via-[#eaff00] to-transparent shadow-[0_0_12px_rgba(234,255,0,0.85),0_0_24px_rgba(234,255,0,0.5)]" />
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-[550px] h-12 bg-[radial-gradient(ellipse,_rgba(234,255,0,0.35)_0%,_transparent_70%)] blur-xl pointer-events-none" />
+
+          {/* Soft Diffused Volumetric Glow behind Left and Right Corners */}
+          <div className="absolute top-[40px] left-[5%] sm:left-[12%] w-[380px] h-[220px] bg-[radial-gradient(ellipse_at_center,_rgba(234,255,0,0.08),transparent_70%)] blur-3xl pointer-events-none" />
+          <div className="absolute top-[40px] right-[5%] sm:right-[12%] w-[380px] h-[220px] bg-[radial-gradient(ellipse_at_center,_rgba(234,255,0,0.08),transparent_70%)] blur-3xl pointer-events-none" />
+
+          {/* Symmetrical Cyber Bevel Lines (Soft & Luminous) */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            viewBox="0 0 1440 600"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              {/* Left Laser Gradient: Soft gentle yellow fade */}
+              <linearGradient id="laserLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#eaff00" stopOpacity="0" />
+                <stop offset="30%" stopColor="#eaff00" stopOpacity="0.3" />
+                <stop offset="60%" stopColor="#eaff00" stopOpacity="0.65" />
+                <stop offset="80%" stopColor="#eaff00" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#eaff00" stopOpacity="0" />
+              </linearGradient>
+
+              {/* Right Laser Gradient: Soft gentle yellow fade */}
+              <linearGradient id="laserRight" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#eaff00" stopOpacity="0" />
+                <stop offset="30%" stopColor="#eaff00" stopOpacity="0.3" />
+                <stop offset="60%" stopColor="#eaff00" stopOpacity="0.65" />
+                <stop offset="80%" stopColor="#eaff00" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#eaff00" stopOpacity="0" />
+              </linearGradient>
+
+              {/* Soft Diffused Glow Filter */}
+              <filter id="laserBloom" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Left Wing Laser Line (Sharp Bevel Corner, Soft Glow) */}
+            <path
+              d="M -50,95 L 310,95 L 490,275"
+              stroke="url(#laserLeft)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="miter"
+              filter="url(#laserBloom)"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Right Wing Laser Line (Sharp Bevel Corner, Soft Glow) */}
+            <path
+              d="M 1490,95 L 1130,95 L 950,275"
+              stroke="url(#laserRight)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="miter"
+              filter="url(#laserBloom)"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Glowing Accent Node on the Right Wing (Soft Pure Yellow) */}
+            <circle cx="1040" cy="185" r="7" fill="#eaff00" fillOpacity="0.25" filter="url(#laserBloom)" />
+            <circle cx="1040" cy="185" r="3" fill="#eaff00" stroke="#eaff00" strokeWidth="0.75" />
+          </svg>
+
+          {/* Bottom Arch Horizon Luminous Line (Bright Glowing Neon) */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-4xl h-[1.5px] bg-gradient-to-r from-transparent via-[#eaff00] to-transparent shadow-[0_0_12px_rgba(234,255,0,0.85),0_0_24px_rgba(234,255,0,0.5)]" />
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[550px] h-12 bg-[radial-gradient(ellipse,_rgba(234,255,0,0.35)_0%,_transparent_70%)] blur-xl pointer-events-none" />
+
+          {/* Smooth Vertical Fade Vignette to seamlessly blend into surrounding page */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a] opacity-80" />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+              Real-World Impact
+            </h2>
+            <p className="text-neutral-400 text-xs sm:text-sm md:text-base mt-2 font-medium tracking-wide">
+              High-retention edits delivering exponential reach and engagement across platforms.
+            </p>
+          </div>
+
+          {/* 2 Video Cards in One Line (Side by Side) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+            {realResultsData.slice(0, 2).map((item, idx) => {
+              const isPlaying = playingRealResult === item.id;
+              const thumb = getVideoThumbnail(item.thumbnail, item.videoUrl);
+
+              return (
+                <div key={item.id || idx} className="flex flex-col group">
+                  {/* 16:9 Video Container */}
+                  <div className="relative aspect-video w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-all duration-300 shadow-xl">
+                    {isPlaying ? (
+                      <div className="relative w-full h-full bg-black">
+                        {(() => {
+                          const formatted = formatVideoUrl(item.videoUrl, true);
+                          if (formatted.type === "video") {
+                            return (
+                              <video
+                                src={formatted.src}
+                                controls
+                                autoPlay
+                                playsInline
+                                className="w-full h-full object-contain"
+                              />
+                            );
+                          }
+                          return (
+                            <iframe
+                              className="w-full h-full"
+                              src={formatted.src}
+                              title={item.title || item.views}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          );
+                        })()}
+
+                        {/* Close / Return to Preview button */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPlayingRealResult(null);
+                          }}
+                          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-neutral-900 text-neutral-300 hover:text-[#eaff00] transition-colors border border-neutral-700/80 shadow-lg backdrop-blur-md"
+                          title="Close video"
+                          aria-label="Close video"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => setPlayingRealResult(item.id)}
+                        className="relative w-full h-full cursor-pointer group/card"
+                      >
+                        {thumb ? (
+                          <img
+                            src={thumb}
+                            alt={item.title || item.views}
+                            className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-tr from-neutral-950 via-neutral-900 to-neutral-800" />
+                        )}
+
+                        {/* Ambient vignette overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
+                        {/* Play Button Overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-16 h-11 sm:w-18 sm:h-12 rounded-2xl bg-black/75 backdrop-blur-md border border-white/15 text-white flex items-center justify-center shadow-2xl transform group-hover/card:scale-110 group-hover/card:bg-[#eaff00] group-hover/card:text-black group-hover/card:border-transparent transition-all duration-300">
+                            <Play className="w-6 h-6 ml-0.5 fill-current transition-colors" />
+                          </div>
+                        </div>
+
+                        {/* Optional duration badge */}
+                        {item.duration && (
+                          <DurationBadge videoUrl={item.videoUrl} fallbackDuration={item.duration} />
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Respective Views Stat in One Line under Video */}
+                  <div className="text-center pt-4 sm:pt-5">
+                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white font-sans inline-block group-hover:text-[#eaff00] transition-colors">
+                      <RealResultViewCount videoUrl={item.videoUrl} fallbackViews={item.views} />
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       {/* Work Grid: Dual Showcase (Left 16:9 + Right 9:16) */}
@@ -1394,6 +1644,7 @@ export default function Home() {
             <div className="flex flex-col gap-2">
               <span className="text-white font-bold tracking-wider uppercase text-xs">Sections</span>
               <div className="flex flex-col gap-1.5">
+                <a href="#results" className="hover:text-[#eaff00] transition-colors py-0.5">Real Results</a>
                 <a href="#work" className="hover:text-[#eaff00] transition-colors py-0.5">See My Services</a>
                 <a href="#about" className="hover:text-[#eaff00] transition-colors py-0.5">Tooling &amp; Workflow</a>
                 <a href="#contact" className="hover:text-[#eaff00] transition-colors py-0.5">Contact</a>

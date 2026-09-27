@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/react';
+import ProgressiveBlur from "@/components/ProgressiveBlur";
 
 const sfPro = localFont({
   src: [
@@ -43,6 +44,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${sfPro.className} antialiased bg-neutral-950 text-neutral-200 bg-grid-pattern`}>
         {children}
+        {/* Sleek Framer-style Progressive Multi-Layer Optical Lens Blur */}
+        <ProgressiveBlur />
         <Analytics/>
       </body>
     </html>
