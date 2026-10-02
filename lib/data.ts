@@ -97,6 +97,16 @@ export const projectsData: VideoProject[] = [
     duration: "1:08",
   },
   {
+    id: "video-gaming-intro-16-9",
+    title: "Gaming Intro Edit",
+    category: "Gaming",
+    aspectRatio: "16:9",
+    thumbnail: "",
+    videoUrl: "https://youtu.be/Rx0lVD40vEA",
+    description: "Dynamic and high-energy intro editing crafted with sound design, and text effects to hook the audience instantly.",
+    duration: "0:30",
+  },
+  {
     id: "video-9-16",
     title: "High-Retention Reel & TikTok",
     category: "Reels / Shorts",
