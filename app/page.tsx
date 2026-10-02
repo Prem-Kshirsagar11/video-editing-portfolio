@@ -1179,8 +1179,10 @@ export default function Home() {
                         </div>
                       ) : (
                         <div
-                          onClick={() => setPlayingInline(video.id)}
-                          className="relative aspect-[9/16] w-full max-w-[200px] sm:max-w-[215px] mx-auto rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl cursor-pointer group/player border-2 border-neutral-800/90"
+                          onClick={() => {
+                            if (video.videoUrl) setPlayingInline(video.id);
+                          }}
+                          className={`relative aspect-[9/16] w-full max-w-[200px] sm:max-w-[215px] mx-auto rounded-3xl overflow-hidden bg-neutral-900 shadow-2xl ${video.videoUrl ? "cursor-pointer group/player" : "cursor-default"} border-2 border-neutral-800/90`}
                         >
                           {/* Subtle phone speaker notch indicator */}
                           <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1 bg-neutral-800 rounded-full z-10 opacity-70" />
@@ -1201,11 +1203,18 @@ export default function Home() {
                           {/* Ambient vignette overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 pointer-events-none" />
 
-                          {/* Play Button Overlay */}
+                          {/* Play Button Overlay or Coming Soon */}
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
-                              <Play className="w-5 h-5 ml-0.5 fill-black text-black" />
-                            </div>
+                            {video.videoUrl ? (
+                              <div className="w-12 h-12 rounded-full bg-[#eaff00] text-black flex items-center justify-center shadow-2xl transform group-hover/player:scale-110 transition-transform duration-300">
+                                <Play className="w-5 h-5 ml-0.5 fill-black text-black" />
+                              </div>
+                            ) : (
+                              <div className="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-[#eaff00]/50 text-[#eaff00] font-bold text-xs uppercase tracking-wider shadow-xl flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-[#eaff00] animate-pulse" />
+                                Coming Soon
+                              </div>
+                            )}
                           </div>
 
                           {/* Top Badges */}
@@ -1219,7 +1228,9 @@ export default function Home() {
                           </div>
 
                           {/* Bottom Duration Badge */}
-                          <DurationBadge videoUrl={video.videoUrl} fallbackDuration={video.duration} />
+                          {video.videoUrl && (
+                            <DurationBadge videoUrl={video.videoUrl} fallbackDuration={video.duration} />
+                          )}
                         </div>
                       )}
 
